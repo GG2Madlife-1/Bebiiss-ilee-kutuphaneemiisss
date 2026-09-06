@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bizim Masalımız</title>
+    <!-- Yazı Tipleri (İnternetten otomatik çekilir) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Quicksand:wght@400;600&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS (TASARIM) BÖLÜMÜ -->
+    <style>
+        /* Genel Tasarım */
+        body { margin: 0; padding: 0; font-family: 'Quicksand', sans-serif; transition: background-color 1s ease, color 1s ease; }
+        
+        /* 5 Farklı Atmosferin Renkleri */
+        body.theme-doga { background-color: #f4f1ea; color: #4a3f35; }
+        body.theme-pembe { background-color: #f7e8e9; color: #5a4a4a; }
+        body.theme-gece { background-color: #0b0c10; color: #e0e0e0; }
+        body.theme-sinema { background-color: #15151b; color: #fff; }
+        body.theme-oyun { background-color: #e6e6fa; color: #4a3f35; }
+
+        /* Üstteki Sekmeler Menüsü */
+        .tab-menu { display: flex; position: sticky; top: 0; z-index: 100; background: rgba(255, 255, 255, 0.8); overflow-x: auto; scroll-snap-type: x mandatory; }
+        .tab-menu::-webkit-scrollbar { display: none; }
+        .tab-btn { background: none; border: none; padding: 20px 25px; font-family: 'Cinzel', serif; font-weight: 600; color: #666; cursor: pointer; flex: 0 0 auto; scroll-snap-align: start; }
+        .tab-btn.active { color: #d4a373; border-bottom: 3px solid #d4a373; }
+
+        /* İçerik Bölümleri (Tıklayınca açılıp kapanan yerler) */
+        .content-section { display: none; padding: 40px 20px; max-width: 800px; margin: 0 auto; }
+        .content-section.active { display: block; }
+        h1, h2 { font-family: 'Cinzel', serif; text-align: center; color: #d4a373; margin-bottom: 30px; }
+
+        /* Sarmaşıklı Kitap (Giriş) */
+        .vine-book { background: #fffdf7; border-radius: 12px; padding: 40px 30px; border: 1px solid #eaddcf; text-align: center; }
+
+        /* Hayaller Haritası ve Fotoğraf Ekleme Tasarımı */
+        .list-container { background: #fff; border-radius: 15px; padding: 15px 25px; margin-bottom: 15px; border-left: 5px solid #d4a373; }
+        .list-item { display: flex; align-items: center; font-size: 1.2em; cursor: pointer; }
+        .checkbox { width: 25px; height: 25px; border: 2px solid #d4a373; border-radius: 5px; margin-right: 15px; display: flex; align-items: center; justify-content: center; color: transparent; font-weight: bold; }
+        
+        .list-item.completed .checkbox { background-color: #d4a373; color: #fff; }
+        .list-item.completed .item-text { text-decoration: line-through; color: #aaa; }
+        
+        /* Fotoğraf Seçme ve Yazı Yazma Kutusu */
+        .memory-edit { display: none; margin-top: 15px; border-top: 1px dashed #eaddcf; padding-top: 15px; }
+        .memory-edit textarea { width: 100%; padding: 10px; border-radius: 8px; margin-bottom: 10px; font-family: 'Quicksand'; box-sizing: border-box;}
+        .memory-edit input { margin-bottom: 10px; }
+        .save-btn { background: #d4a373; color: white; padding: 8px 20px; border: none; border-radius: 20px; cursor: pointer; }
+        
+        /* Kaydedilen Fotoğrafın Göründüğü Kutu */
+        .memory-display { display: none; margin-top: 15px; text-align: center; }
+        .memory-display img { max-width: 100%; border-radius: 10px; max-height: 250px; }
+        .memory-display p { font-family: 'Caveat', cursive; font-size: 1.6em; }
+        .delete-btn { background: none; border: 1px solid #ff7675; color: #ff7675; padding: 5px 15px; border-radius: 15px; cursor: pointer; margin-top:10px; }
+    </style>
+</head>
+<body class="theme-doga">
+
+    <!-- HTML (İSKELET VE İÇERİK) BÖLÜMÜ -->
+    
+    <!-- Menü (Sekmeler) -->
+    <nav class="tab-menu">
+        <button class="tab-btn active" onclick="openTab('giris', this, 'theme-doga')">Giriş</button>
+        <button class="tab-btn" onclick="openTab('hayaller', this, 'theme-doga')">Hayallerimiz</button>
+    </nav>
+
+    <!-- 1. Giriş Sekmesi -->
+    <section id="giris" class="content-section active">
+        <div class="vine-book">
+            <h1>Sihirli Dünyamıza Hoş Geldin</h1>
+            <p>Sevgilim, bu defa sana bambaşka bir dünya hazırladım. Yukarıdaki sekmelerden ilerleyebilirsin.</p>
+        </div>
+    </section>
+
+    <!-- 2. Hayaller Haritası Sekmesi -->
+    <section id="hayaller" class="content-section">
+        <h2>Anı Haritamız</h2>
+        <p style="text-align: center;">Hayallerimizin üzerini çiz, fotoğrafını ve notunu ekle! ✔</p>
+        
+        <!-- Örnek 1. Hayal Kutusu -->
+        <div class="list-container">
+            <!-- Tıklanacak Kısım -->
+            <div class="list-item" id="item-hayal1" onclick="tiklamaOlayi('hayal1')">
+                <div class="checkbox">✔</div>
+                <div class="item-text">Birlikte ilk kampımızı yapmak</div>
+            </div>
+            
+            <!-- Bilgilerin Girildiği Gizli Kutu -->
+            <div class="memory-edit" id="edit-hayal1">
+                <textarea id="note-hayal1" rows="2" placeholder="O güne dair hislerini yaz..."></textarea>
+                <input type="file" id="file-hayal1" accept="image/*">
+                <br>
+                <button class="save-btn" onclick="aniyiKaydet('hayal1')">Anıyı Kaydet 🤍</button>
+            </div>
+            
+            <!-- Fotoğrafın ve Yazının Gösterildiği Kutu -->
+            <div class="memory-display" id="display-hayal1">
+                <img id="img-hayal1" src="">
+                <p id="text-hayal1"></p>
+                <button class="delete-btn" onclick="aniyiSil('hayal1')">Sil / Düzenle 🗑️</button>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- JS (JAVASCRIPT / BEYİN) BÖLÜMÜ -->
+    <script>
+        // 1. Sekmeleri Açıp Kapatma Kodu
+        function openTab(tabId, btnElement, themeClass) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btnElement.classList.add('active');
+            document.body.className = themeClass; // Temayı (Arka plan rengini) değiştir
+        }
+
+        // 2. Sayfa açıldığında hafızada fotoğraf var mı diye kontrol etme
+        document.addEventListener("DOMContentLoaded", function() {
+            let kayitliVeri = localStorage.getItem('hayal1');
+            if (kayitliVeri) {
+                document.getElementById('item-hayal1').classList.add('completed');
+                aniyiEkrandaGoster('hayal1', JSON.parse(kayitliVeri));
+            }
+        });
+
+        // 3. Hayalin üstüne (Tike) Tıklama Olayı
+        function tiklamaOlayi(id) {
+            let kutu = document.getElementById('item-' + id);
+            let duzenleYeri = document.getElementById('edit-' + id);
+            
+            // Eğer zaten kayıtlı bir fotoğraf varsa uyarı ver
+            if (localStorage.getItem(id)) {
+                alert("Önce aşağıdaki Sil butonuna basmalısın.");
+                return;
+            }
+
+            // Tıklayınca tiki at ve yükleme ekranını aç
+            kutu.classList.toggle('completed');
+            if (kutu.classList.contains('completed')) {
+                duzenleYeri.style.display = 'block';
+            } else {
+                duzenleYeri.style.display = 'none';
+            }
+        }
+
+        // 4. Fotoğrafı ve Notu Telefona/Bilgisayara Kaydetme Olayı
+        function aniyiKaydet(id) {
+            let not = document.getElementById('note-' + id).value;
+            let resimDosyasi = document.getElementById('file-' + id).files[0];
+            
+            if (resimDosyasi) {
+                // Resim seçildiyse onu okunabilir bir koda (URL) çevir
+                let okuyucu = new FileReader();
+                okuyucu.onload = function(e) {
+                    let resimKodu = e.target.result;
+                    let toplananVeri = { yazi: not, fotograf: resimKodu };
+                    
+                    localStorage.setItem(id, JSON.stringify(toplananVeri)); // Hafızaya kaydet
+                    aniyiEkrandaGoster(id, toplananVeri); // Ekranda göster
+                }
+                okuyucu.readAsDataURL(resimDosyasi);
+            } else {
+                // Sadece yazı yazıldıysa (Resim yoksa)
+                let toplananVeri = { yazi: not, fotograf: "" };
+                localStorage.setItem(id, JSON.stringify(toplananVeri));
+                aniyiEkrandaGoster(id, toplananVeri);
+            }
+        }
+
+        // 5. Kaydedilen Anıyı Ekrana Basma Olayı
+        function aniyiEkrandaGoster(id, veri) {
+            document.getElementById('edit-' + id).style.display = 'none'; // Yükleme yerini gizle
+            document.getElementById('display-' + id).style.display = 'block'; // Gösterim yerini aç
+            
+            document.getElementById('text-' + id).innerText = veri.yazi; // Yazıyı bas
+            
+            let resimYeri = document.getElementById('img-' + id);
+            if (veri.fotograf) {
+                resimYeri.src = veri.fotograf; // Resmi bas
+                resimYeri.style.display = 'block';
+            } else {
+                resimYeri.style.display = 'none';
+            }
+        }
+
+        // 6. Anıyı Silme Olayı
+        function aniyiSil(id) {
+            if (confirm("Bu anıyı tamamen silmek istediğine emin misin?")) {
+                localStorage.removeItem(id); // Hafızadan sil
+                
+                document.getElementById('item-' + id).classList.remove('completed'); // Tiki kaldır
+                document.getElementById('display-' + id).style.display = 'none'; // Fotoğrafı gizle
+                
+                document.getElementById('note-' + id).value = ''; // Eski yazıyı temizle
+                document.getElementById('file-' + id).value = ''; // Eski fotoğrafı temizle
+            }
+        }
+    </script>
+</body>
+</html>
