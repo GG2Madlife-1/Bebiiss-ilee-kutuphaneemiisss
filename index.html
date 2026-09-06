@@ -4,197 +4,513 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bizim Masalımız</title>
-    <!-- Yazı Tipleri (İnternetten otomatik çekilir) -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Quicksand:wght@400;600&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
     
-    <!-- CSS (TASARIM) BÖLÜMÜ -->
     <style>
-        /* Genel Tasarım */
-        body { margin: 0; padding: 0; font-family: 'Quicksand', sans-serif; transition: background-color 1s ease, color 1s ease; }
+        /* 1. GENEL TASARIM VE TEMALAR */
+        body { margin: 0; padding: 0; font-family: 'Quicksand', sans-serif; transition: background-color 1s ease, color 1s ease; overflow-x: hidden; }
         
-        /* 5 Farklı Atmosferin Renkleri */
         body.theme-doga { background-color: #f4f1ea; color: #4a3f35; }
         body.theme-pembe { background-color: #f7e8e9; color: #5a4a4a; }
+        body.theme-oyun { background-color: #e6e6fa; color: #4a3f35; }
         body.theme-gece { background-color: #0b0c10; color: #e0e0e0; }
         body.theme-sinema { background-color: #15151b; color: #fff; }
-        body.theme-oyun { background-color: #e6e6fa; color: #4a3f35; }
 
-        /* Üstteki Sekmeler Menüsü */
-        .tab-menu { display: flex; position: sticky; top: 0; z-index: 100; background: rgba(255, 255, 255, 0.8); overflow-x: auto; scroll-snap-type: x mandatory; }
+        /* ARKA PLAN EFEKTLERİ */
+        .hearts-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; opacity: 0; transition: 1s; }
+        body.theme-pembe .hearts-bg { opacity: 1; }
+        .heart { position: absolute; font-size: 20px; opacity: 0.6; animation: floatUp 8s linear infinite; }
+        @keyframes floatUp { 0% { transform: translateY(100vh) scale(0.5); opacity: 0; } 50% { opacity: 0.5; } 100% { transform: translateY(-10vh) scale(1.2); opacity: 0; } }
+
+        .night-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; opacity: 0; transition: 1s; overflow: hidden;}
+        body.theme-gece .night-bg { opacity: 1; }
+        .fire-glow { position: absolute; bottom: -100px; left: 50%; transform: translateX(-50%); width: 150vw; height: 60vh; background: radial-gradient(ellipse at bottom, rgba(255, 100, 20, 0.3) 0%, rgba(200, 50, 0, 0.1) 40%, transparent 70%); animation: flicker 3s infinite alternate; }
+        @keyframes flicker { 0% { opacity: 0.7; transform: translateX(-50%) scale(1); } 100% { opacity: 1; transform: translateX(-50%) scale(1.05); } }
+        .aurora-bg { position: absolute; bottom: 0; left: 0; right: 0; height: 60%; background: radial-gradient(circle at 20% 80%, rgba(0, 255, 153, 0.1) 0%, transparent 40%), radial-gradient(circle at 80% 90%, rgba(100, 50, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 50% 100%, rgba(0, 150, 255, 0.1) 0%, transparent 50%); z-index: 1; }
+        .shooting-star { position: absolute; width: 3px; height: 3px; background: #fff; border-radius: 50%; box-shadow: 0 0 6px 2px rgba(255,255,255,0.8); animation: shooting 5s linear infinite; opacity: 0; }
+        .shooting-star::after { content: ''; position: absolute; top: 50%; transform: translateY(-50%); width: 80px; height: 1px; background: linear-gradient(90deg, #fff, transparent); }
+        .star1 { top: -10%; left: 70%; animation-delay: 0s; }
+        .star2 { top: -20%; left: 90%; animation-delay: 2s; }
+        .star3 { top: 10%; left: 110%; animation-delay: 4.5s; }
+        @keyframes shooting { 0% { transform: translateX(0) translateY(0) rotate(-45deg); opacity: 1; } 15% { transform: translateX(-300px) translateY(300px) rotate(-45deg); opacity: 0; } 100% { opacity: 0; } }
+
+        /* 2. MENÜ (SEKMELER) */
+        .tab-menu { display: flex; justify-content: center; position: sticky; top: 0; z-index: 100; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); overflow-x: auto; scroll-snap-type: x mandatory; }
         .tab-menu::-webkit-scrollbar { display: none; }
-        .tab-btn { background: none; border: none; padding: 20px 25px; font-family: 'Cinzel', serif; font-weight: 600; color: #666; cursor: pointer; flex: 0 0 auto; scroll-snap-align: start; }
+        .tab-btn { background: none; border: none; padding: 20px 25px; font-family: 'Cinzel', serif; font-weight: 600; color: #666; cursor: pointer; flex: 0 0 auto; scroll-snap-align: start; transition: 0.3s; }
         .tab-btn.active { color: #d4a373; border-bottom: 3px solid #d4a373; }
+        body.theme-gece .tab-menu, body.theme-sinema .tab-menu { background: rgba(0, 0, 0, 0.6); }
+        body.theme-gece .tab-btn, body.theme-sinema .tab-btn { color: #aaa; }
+        body.theme-gece .tab-btn.active { color: #f8e9a1; border-bottom-color: #f8e9a1; }
+        body.theme-sinema .tab-btn.active { color: #fff; border-bottom-color: #fff; }
 
-        /* İçerik Bölümleri (Tıklayınca açılıp kapanan yerler) */
-        .content-section { display: none; padding: 40px 20px; max-width: 800px; margin: 0 auto; }
+        /* 3. İÇERİK BÖLÜMLERİ (Genişlik artırıldı, tam yayılma sağlandı) */
+        .content-section { display: none; padding: 40px 30px; max-width: 1000px; margin: 0 auto; animation: fadeIn 0.5s ease; box-sizing: border-box; }
         .content-section.active { display: block; }
-        h1, h2 { font-family: 'Cinzel', serif; text-align: center; color: #d4a373; margin-bottom: 30px; }
-
-        /* Sarmaşıklı Kitap (Giriş) */
-        .vine-book { background: #fffdf7; border-radius: 12px; padding: 40px 30px; border: 1px solid #eaddcf; text-align: center; }
-
-        /* Hayaller Haritası ve Fotoğraf Ekleme Tasarımı */
-        .list-container { background: #fff; border-radius: 15px; padding: 15px 25px; margin-bottom: 15px; border-left: 5px solid #d4a373; }
-        .list-item { display: flex; align-items: center; font-size: 1.2em; cursor: pointer; }
-        .checkbox { width: 25px; height: 25px; border: 2px solid #d4a373; border-radius: 5px; margin-right: 15px; display: flex; align-items: center; justify-content: center; color: transparent; font-weight: bold; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         
+        h1, h2 { font-family: 'Cinzel', serif; text-align: center; color: #d4a373; margin-bottom: 30px; }
+        body.theme-oyun h2, body.theme-oyun h3 { color: #8e7cc3; font-family: 'Cinzel', serif; text-align:center;}
+        body.theme-gece h1, body.theme-gece h2 { color: #f8e9a1; text-shadow: 0 0 15px rgba(255,100,20,0.5); }
+        body.theme-sinema h1, body.theme-sinema h2 { color: #fff; }
+
+        /* 4. ŞARKI KARTLARI */
+        .vine-book { background: #fffdf7; border-radius: 12px; padding: 40px 30px; border: 1px solid #eaddcf; text-align: center; }
+        .song-card { display: flex; align-items: center; background: rgba(255,255,255,0.7); padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(212,138,148,0.15); border-left: 5px solid #ffc4cf; transition: all 0.5s; position: relative; overflow: hidden;}
+        .song-info { flex-grow: 1; z-index: 2;}
+        .song-title { font-weight: 600; font-size: 1.2em; margin-bottom: 5px; }
+        .song-desc { font-size: 0.95em; color: #777; }
+        audio { height: 40px; outline: none; z-index: 2;}
+        
+        body.theme-gece .song-card { background: rgba(0, 0, 0, 0.4); border-left: 5px solid #f8e9a1; box-shadow: 0 5px 15px rgba(255,100,20,0.1); color: #eaddcf; border: 1px solid rgba(248,233,161,0.2); }
+        body.theme-gece .song-desc { color: #aaa; }
+        .magic-note { position: absolute; right: 20px; font-size: 1.5em; opacity: 0; color: #f8e9a1; }
+        body.theme-gece .song-card:hover .magic-note { animation: floatNote 2s infinite ease-out; }
+        @keyframes floatNote { 0% { transform: translateY(10px) scale(0.8); opacity: 0; } 50% { opacity: 0.8; } 100% { transform: translateY(-30px) scale(1.2); opacity: 0; } }
+
+        /* 5. HAYALLER HARİTASI */
+        .list-container { background: #fff; border-radius: 15px; padding: 15px 25px; margin-bottom: 15px; border-left: 5px solid #d4a373; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .list-item { display: flex; align-items: center; font-size: 1.2em; cursor: pointer; color: #4a3f35;}
+        .checkbox { width: 25px; height: 25px; border: 2px solid #d4a373; border-radius: 5px; margin-right: 15px; display: flex; align-items: center; justify-content: center; color: transparent; font-weight: bold; }
         .list-item.completed .checkbox { background-color: #d4a373; color: #fff; }
         .list-item.completed .item-text { text-decoration: line-through; color: #aaa; }
-        
-        /* Fotoğraf Seçme ve Yazı Yazma Kutusu */
         .memory-edit { display: none; margin-top: 15px; border-top: 1px dashed #eaddcf; padding-top: 15px; }
         .memory-edit textarea { width: 100%; padding: 10px; border-radius: 8px; margin-bottom: 10px; font-family: 'Quicksand'; box-sizing: border-box;}
         .memory-edit input { margin-bottom: 10px; }
-        .save-btn { background: #d4a373; color: white; padding: 8px 20px; border: none; border-radius: 20px; cursor: pointer; }
-        
-        /* Kaydedilen Fotoğrafın Göründüğü Kutu */
+        .save-btn { background: #d4a373; color: white; padding: 8px 20px; border: none; border-radius: 20px; cursor: pointer; font-weight: bold; }
         .memory-display { display: none; margin-top: 15px; text-align: center; }
         .memory-display img { max-width: 100%; border-radius: 10px; max-height: 250px; }
-        .memory-display p { font-family: 'Caveat', cursive; font-size: 1.6em; }
+        .memory-display p { font-family: 'Caveat', cursive; font-size: 1.6em; color: #4a3f35; }
         .delete-btn { background: none; border: 1px solid #ff7675; color: #ff7675; padding: 5px 15px; border-radius: 15px; cursor: pointer; margin-top:10px; }
+
+        /* 6. MASAL DEFTERİ */
+        .story-chapter { font-family: 'Cinzel', serif; font-size: 1.6em; color: #f8e9a1; margin-top: 40px; border-bottom: 1px solid rgba(248,233,161,0.2); padding-bottom: 10px; }
+        .story-text { font-family: 'Caveat', cursive; font-size: 1.9em; line-height: 1.6; color: #eaddcf; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); }
+        .reveal-text { opacity: 0; transform: translateY(20px); transition: all 1s ease; }
+        .reveal-text.show { opacity: 1; transform: translateY(0); }
+        .masal-container { position: relative; padding: 20px; }
+        .firefly { position: absolute; width: 4px; height: 4px; background: #f8e9a1; border-radius: 50%; box-shadow: 0 0 10px 2px #f8e9a1; opacity: 0; pointer-events: none; }
+        .ff1 { top: 10%; left: 10%; animation: fireflyMove 4s infinite alternate ease-in-out; }
+        .ff2 { top: 50%; right: 10%; animation: fireflyMove 5s infinite alternate-reverse ease-in-out; animation-delay: 1s;}
+        .ff3 { bottom: 20%; left: 40%; animation: fireflyMove 6s infinite alternate ease-in-out; animation-delay: 2s;}
+        @keyframes fireflyMove { 0% { transform: translate(0, 0) scale(1); opacity: 0.3; } 100% { transform: translate(30px, -30px) scale(1.5); opacity: 0.9; } }
+
+        /* 7. AMBILIGHT GALERİ VE BİLGİSAYAR İÇİN GEÇİŞ OKLARI */
+        .slider-wrapper { position: relative; width: 100%; max-width: 600px; margin: 0 auto; }
+        .slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; gap: 40px; padding: 20px 0 40px 0; }
+        .slider::-webkit-scrollbar { display: none; }
+        .slide { flex: 0 0 100%; scroll-snap-align: center; position: relative; }
+        .ambilight-shadow { position: absolute; top: 0; left: 0; width: 100%; height: 100%; filter: blur(25px); opacity: 0.8; transform: scale(1.05); z-index: -1; border-radius: 20px; }
+        .media-front { position: relative; width: 100%; border-radius: 15px; z-index: 1; box-shadow: 0 10px 30px rgba(0,0,0,0.8); display: block; }
+        .slide-caption { font-family: 'Caveat', cursive; font-size: 1.8em; text-align: center; margin-top: 20px; color: #ccc; }
+
+        /* Bilgisayar İçin Kaydırma Okları */
+        .slider-btn { position: absolute; top: 40%; transform: translateY(-50%); background: rgba(255,255,255,0.8); border: none; width: 45px; height: 45px; border-radius: 50%; font-size: 1.3em; color: #15151b; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 10; transition: 0.2s; }
+        .slider-btn:hover { background: #fff; transform: translateY(-50%) scale(1.1); }
+        .slider-btn.prev { left: -60px; }
+        .slider-btn.next { right: -60px; }
+
+        /* 8. OYUN ODASI */
+        .game-section { background: rgba(255,255,255,0.6); padding: 25px; border-radius: 20px; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 2px solid #fff; }
+        .love-meter-box { text-align: center; }
+        .meter-bar { width: 100%; height: 25px; background: #ddd; border-radius: 20px; margin: 20px 0; overflow: hidden; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1); }
+        .meter-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%); transition: width 2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .love-btn { background: #8e7cc3; color: white; border: none; padding: 12px 30px; font-size: 1.2em; border-radius: 25px; font-family: 'Quicksand'; cursor: pointer; transition: 0.2s; font-weight: bold;}
+        .love-btn:active { transform: scale(0.95); }
+        #love-result { font-family: 'Caveat', cursive; font-size: 2em; color: #d63031; margin-top: 15px; height: 60px; }
+
+        .xox-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 300px; margin: 20px auto; }
+        .xox-cell { background: #fff; aspect-ratio: 1; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 3em; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: 0.2s; }
+        .xox-cell:hover { background: #fdfbf7; }
+        .xox-status { text-align: center; font-size: 1.2em; font-weight: bold; margin-bottom: 10px; color: #666; }
+        .xox-reset { display: block; margin: 15px auto 0; background: #ddd; border: none; padding: 8px 20px; border-radius: 15px; cursor: pointer; font-family: 'Quicksand'; }
+
+        .game-board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; max-width: 500px; margin: 0 auto; perspective: 1000px; }
+        .memory-card { width: 100%; aspect-ratio: 1; position: relative; cursor: pointer; transform-style: preserve-3d; transition: transform 0.5s; }
+        .memory-card.flip { transform: rotateY(180deg); }
+        .front-face, .back-face { position: absolute; width: 100%; height: 100%; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 2.5em; backface-visibility: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .front-face { background: #fff; transform: rotateY(180deg); }
+        .back-face { background: #8e7cc3; color: white; font-size: 2em; }
+        #win-message { display: none; text-align: center; font-family: 'Caveat', cursive; font-size: 2em; color: #d63031; margin-top: 30px; }
+        
+        @media (max-width: 768px) {
+            .slider-btn { display: none; } /* Mobilde okları gizle, parmakla kaydırsın */
+            .game-board { grid-template-columns: repeat(3, 1fr); } 
+            .front-face, .back-face { font-size: 2em; }
+        }
     </style>
 </head>
 <body class="theme-doga">
 
-    <!-- HTML (İSKELET VE İÇERİK) BÖLÜMÜ -->
-    
-    <!-- Menü (Sekmeler) -->
+    <!-- ARKA PLAN EFEKTLERİ -->
+    <div class="hearts-bg">
+        <div class="heart" style="left: 10%; animation-duration: 7s;">🤍</div>
+        <div class="heart" style="left: 40%; animation-duration: 9s; animation-delay: 1.5s;">💖</div>
+        <div class="heart" style="left: 70%; animation-duration: 6s;">🤍</div>
+        <div class="heart" style="left: 85%; animation-duration: 10s; animation-delay: 2s;">💖</div>
+    </div>
+
+    <div class="night-bg">
+        <div class="aurora-bg"></div>
+        <div class="fire-glow"></div>
+        <div style="position:absolute; top:10%; left:20%; color:#fff; font-size:10px; opacity:0.5;">✦</div>
+        <div style="position:absolute; top:30%; left:80%; color:#fff; font-size:12px; opacity:0.8;">✦</div>
+        <div style="position:absolute; top:15%; left:60%; color:#fff; font-size:8px; opacity:0.4;">✦</div>
+        <div class="shooting-star star1"></div>
+        <div class="shooting-star star2"></div>
+        <div class="shooting-star star3"></div>
+    </div>
+
+    <!-- MENÜ -->
     <nav class="tab-menu">
         <button class="tab-btn active" onclick="openTab('giris', this, 'theme-doga')">Giriş</button>
         <button class="tab-btn" onclick="openTab('hayaller', this, 'theme-doga')">Hayallerimiz</button>
+        <button class="tab-btn" onclick="openTab('masal-sarkilari', this, 'theme-gece')">Masal Şarkıları</button>
+        <button class="tab-btn" onclick="openTab('masal', this, 'theme-gece')">Masal Defteri</button>
+        <button class="tab-btn" onclick="openTab('fotograflar', this, 'theme-sinema')">Fotoğraflar</button>
+        <button class="tab-btn" onclick="openTab('videolar', this, 'theme-sinema')">Videolar</button>
+        <button class="tab-btn" onclick="openTab('muzikler', this, 'theme-pembe')">Müzikler</button>
+        <button class="tab-btn" onclick="openTab('oyun', this, 'theme-oyun')">Oyun Odası</button>
     </nav>
 
-    <!-- 1. Giriş Sekmesi -->
+    <!-- 1. GİRİŞ -->
     <section id="giris" class="content-section active">
         <div class="vine-book">
             <h1>Sihirli Dünyamıza Hoş Geldin</h1>
-            <p>Sevgilim, bu defa sana bambaşka bir dünya hazırladım. Yukarıdaki sekmelerden ilerleyebilirsin.</p>
+            <p>Sevgilim, bu defa sana bambaşka bir dünya hazırladım.<br>Aşağıdaki videoyu izledikten sonra sekmelerde kaybolabilirsin...</p>
+            <video controls class="media-front" style="margin-top:20px;">
+                <source src="tanitim.mp4" type="video/mp4">
+            </video>
         </div>
     </section>
 
-    <!-- 2. Hayaller Haritası Sekmesi -->
+    <!-- 2. HAYALLER HARİTASI -->
     <section id="hayaller" class="content-section">
         <h2>Anı Haritamız</h2>
-        <p style="text-align: center;">Hayallerimizin üzerini çiz, fotoğrafını ve notunu ekle! ✔</p>
-        
-        <!-- Örnek 1. Hayal Kutusu -->
         <div class="list-container">
-            <!-- Tıklanacak Kısım -->
             <div class="list-item" id="item-hayal1" onclick="tiklamaOlayi('hayal1')">
                 <div class="checkbox">✔</div>
-                <div class="item-text">Birlikte ilk kampımızı yapmak</div>
+                <div class="item-text">Sabaha kadar Modern Family izlemek</div>
             </div>
-            
-            <!-- Bilgilerin Girildiği Gizli Kutu -->
             <div class="memory-edit" id="edit-hayal1">
-                <textarea id="note-hayal1" rows="2" placeholder="O güne dair hislerini yaz..."></textarea>
-                <input type="file" id="file-hayal1" accept="image/*">
-                <br>
-                <button class="save-btn" onclick="aniyiKaydet('hayal1')">Anıyı Kaydet 🤍</button>
+                <textarea id="note-hayal1" rows="2" placeholder="O güne dair notunu yaz..."></textarea>
+                <input type="file" id="file-hayal1" accept="image/*"> <br>
+                <button class="save-btn" onclick="aniyiKaydet('hayal1')">Kaydet 🤍</button>
             </div>
-            
-            <!-- Fotoğrafın ve Yazının Gösterildiği Kutu -->
             <div class="memory-display" id="display-hayal1">
-                <img id="img-hayal1" src="">
-                <p id="text-hayal1"></p>
+                <img id="img-hayal1" src=""><p id="text-hayal1"></p>
                 <button class="delete-btn" onclick="aniyiSil('hayal1')">Sil / Düzenle 🗑️</button>
             </div>
         </div>
-
+        <div class="list-container">
+            <div class="list-item" id="item-hayal2" onclick="tiklamaOlayi('hayal2')">
+                <div class="checkbox">✔</div>
+                <div class="item-text">Kendi evimizi dekore etmek</div>
+            </div>
+            <div class="memory-edit" id="edit-hayal2">
+                <textarea id="note-hayal2" rows="2" placeholder="O güne dair notunu yaz..."></textarea>
+                <input type="file" id="file-hayal2" accept="image/*"> <br>
+                <button class="save-btn" onclick="aniyiKaydet('hayal2')">Kaydet 🤍</button>
+            </div>
+            <div class="memory-display" id="display-hayal2">
+                <img id="img-hayal2" src=""><p id="text-hayal2"></p>
+                <button class="delete-btn" onclick="aniyiSil('hayal2')">Sil / Düzenle 🗑️</button>
+            </div>
+        </div>
     </section>
 
-    <!-- JS (JAVASCRIPT / BEYİN) BÖLÜMÜ -->
+    <!-- 3. MASAL ŞARKILARI -->
+    <section id="masal-sarkilari" class="content-section">
+        <h2>Masalımızın Şarkıları</h2>
+        <div class="song-card">
+            <div class="song-info">
+                <div class="song-title">Bir Varmış Bir Yokmuş</div>
+                <div class="song-desc">Karanlığı aydınlatan o ilk melodi...</div>
+            </div>
+            <div class="magic-note">🎵✨</div>
+            <audio controls><source src="masal1.mp3" type="audio/mpeg"></audio>
+        </div>
+    </section>
+
+    <!-- 4. MASAL DEFTERİ -->
+    <section id="masal" class="content-section">
+        <h2>Ateş Başında Anılar...</h2>
+        <div class="masal-container">
+            <div class="firefly ff1"></div>
+            <div class="firefly ff2"></div>
+            <div class="firefly ff3"></div>
+
+            <div class="reveal-text">
+                <div class="story-chapter">Bölüm 1: Yıldız Tozu ve Deneyler</div>
+                <p class="story-text">Evrenin en ücra köşesinde, zamanın sadece çay demlenene kadar akıtıldığı küçük bir laboratuvar varmış. Orada, imkansız formülleri aşkla çözen bir mühendis ile dünyayı gülüşüyle ısıtan bir kimyager yaşarmış. Deney tüplerinden sızan dumanlar gökyüzüne karışır, her biri parlayan birer kuyruklu yıldıza dönüşürmüş...</p>
+            </div>
+
+            <div class="reveal-text" style="transition-delay: 0.8s;">
+                <div class="story-chapter">Bölüm 2: Sonsuzluğun Frekansı</div>
+                <p class="story-text">Günlerden bir gün, kamp ateşinin çıtırtısı gitar tellerindeki akordla buluşmuş. O an, havada süzülen tüm notesiz melodiler tarihin en güzel şarkısını oluşturmuş. Masal bu ya; iki ayrı kalbin frekansı aynı anda titreşmiş ve evren o saniyeden sonra sadece onların hikayesini yazmaya başlamış...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. FOTOĞRAFLAR (Bilgisayar İçin Ok Tuşları Eklendi) -->
+    <section id="fotograflar" class="content-section">
+        <h2>Anı Galerimiz</h2>
+        <p style="text-align:center; color:#888; font-size:0.9em;">(Sağa ve sola kaydırabilirsin)</p>
+        
+        <div class="slider-wrapper">
+            <button class="slider-btn prev" onclick="scrollSlider('foto-slider', -1)">&#10094;</button>
+            <div class="slider" id="foto-slider">
+                <div class="slide">
+                    <img src="foto1.jpg" class="ambilight-shadow"><img src="foto1.jpg" class="media-front">
+                    <p class="slide-caption">Gözlerindeki o ışık...</p>
+                </div>
+                <div class="slide">
+                    <img src="foto2.jpg" class="ambilight-shadow"><img src="foto2.jpg" class="media-front">
+                    <p class="slide-caption">İyi ki sen.</p>
+                </div>
+            </div>
+            <button class="slider-btn next" onclick="scrollSlider('foto-slider', 1)">&#10095;</button>
+        </div>
+    </section>
+
+    <!-- 6. VİDEOLAR (Bilgisayar İçin Ok Tuşları Eklendi) -->
+    <section id="videolar" class="content-section">
+        <h2>Birlikte Çekilenler</h2>
+        <p style="text-align:center; color:#888; font-size:0.9em;">(Yana kaydırarak değiştirebilirsin)</p>
+        
+        <div class="slider-wrapper">
+            <button class="slider-btn prev" onclick="scrollSlider('video-slider', -1)">&#10094;</button>
+            <div class="slider" id="video-slider">
+                <div class="slide">
+                    <div class="ambilight-shadow" style="background: rgba(100,150,255,0.4);"></div>
+                    <video controls class="media-front"><source src="video1.mp4" type="video/mp4"></video>
+                    <p class="slide-caption">O tatilimizden...</p>
+                </div>
+            </div>
+            <button class="slider-btn next" onclick="scrollSlider('video-slider', 1)">&#10095;</button>
+        </div>
+    </section>
+
+    <!-- 7. NORMAL MÜZİKLER -->
+    <section id="muzikler" class="content-section">
+        <h2>Karışık Kasetimiz</h2>
+        <div class="song-card">
+            <div class="song-info">
+                <div class="song-title">Senin İçin Çaldım</div>
+                <div class="song-desc">Sana özel akustik kayıt...</div>
+            </div>
+            <audio controls><source src="akustik.mp3" type="audio/mpeg"></audio>
+        </div>
+    </section>
+
+    <!-- 8. OYUN ODASI -->
+    <section id="oyun" class="content-section">
+        <h2>Oyun Odasına Hoş Geldin!</h2>
+        
+        <div class="game-section">
+            <h3>💘 Aşk Ölçer 💘</h3>
+            <div class="love-meter-box">
+                <p>Bakalım aramızdaki çekim ne kadar güçlü?</p>
+                <button class="love-btn" onclick="askOlc()">Aşkımızı Ölç</button>
+                <div class="meter-bar"><div class="meter-fill" id="love-fill"></div></div>
+                <div id="love-result"></div>
+            </div>
+        </div>
+
+        <div class="game-section">
+            <h3>🤍 Kimyasal XOX 🧪</h3>
+            <div class="xox-status" id="xox-status">Sıra sende: 🤍</div>
+            <div class="xox-board">
+                <div class="xox-cell" onclick="xoxOyna(0, this)"></div>
+                <div class="xox-cell" onclick="xoxOyna(1, this)"></div>
+                <div class="xox-cell" onclick="xoxOyna(2, this)"></div>
+                <div class="xox-cell" onclick="xoxOyna(3, this)"></div>
+                <div class="xox-cell" onclick="xoxOyna(4, this)"></div>
+                <div class="xox-cell" onclick="xoxOyna(5, this)"></div>
+                <div class="xox-cell" onclick="xoxOyna(6, this)"></div>
+                <div class="xox-cell" onclick="xoxOyna(7, this)"></div>
+                <div class="xox-cell" onclick="xoxOyna(8, this)"></div>
+            </div>
+            <button class="xox-reset" onclick="xoxSifirla()">Oyunu Yeniden Başlat</button>
+        </div>
+
+        <div class="game-section">
+            <h3>✨ Eşini Bul ✨</h3>
+            <div class="game-board">
+                <div class="memory-card" data-isim="kimya"><div class="front-face">🧪</div><div class="back-face">?</div></div>
+                <div class="memory-card" data-isim="gitar"><div class="front-face">🎸</div><div class="back-face">?</div></div>
+                <div class="memory-card" data-isim="drone"><div class="front-face">🛸</div><div class="back-face">?</div></div>
+                <div class="memory-card" data-isim="kalp"><div class="front-face">🤍</div><div class="back-face">?</div></div>
+                <div class="memory-card" data-isim="kimya"><div class="front-face">🧪</div><div class="back-face">?</div></div>
+                <div class="memory-card" data-isim="gitar"><div class="front-face">🎸</div><div class="back-face">?</div></div>
+                <div class="memory-card" data-isim="drone"><div class="front-face">🛸</div><div class="back-face">?</div></div>
+                <div class="memory-card" data-isim="kalp"><div class="front-face">🤍</div><div class="back-face">?</div></div>
+            </div>
+            <div id="win-message">Tebrikler Sevgilim! 🎉<br>Ödülün: Kocaman bir sarılma!</div>
+        </div>
+    </section>
+
+    <!-- JAVASCRIPT -->
     <script>
-        // 1. Sekmeleri Açıp Kapatma Kodu
+        // --- SEKMELER VE TEMALAR ---
         function openTab(tabId, btnElement, themeClass) {
             document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btnElement.classList.add('active');
-            document.body.className = themeClass; // Temayı (Arka plan rengini) değiştir
+            document.body.className = themeClass; 
+
+            if(tabId === 'masal') {
+                setTimeout(() => {
+                    document.querySelectorAll('.reveal-text').forEach(el => el.classList.add('show'));
+                }, 200);
+            } else {
+                document.querySelectorAll('.reveal-text').forEach(el => el.classList.remove('show'));
+            }
         }
 
-        // 2. Sayfa açıldığında hafızada fotoğraf var mı diye kontrol etme
+        // --- BİLGİSAYAR İÇİN SLİDER (KAYDIRMA) OKLARI ---
+        function scrollSlider(sliderId, direction) {
+            const slider = document.getElementById(sliderId);
+            const scrollAmount = slider.clientWidth;
+            slider.scrollBy({ left: scrollAmount * direction, behavior: 'smooth' });
+        }
+
+        // --- HAYALLER HARİTASI (HAFIZA) ---
+        let tumHayaller = ['hayal1', 'hayal2']; 
         document.addEventListener("DOMContentLoaded", function() {
-            let kayitliVeri = localStorage.getItem('hayal1');
-            if (kayitliVeri) {
-                document.getElementById('item-hayal1').classList.add('completed');
-                aniyiEkrandaGoster('hayal1', JSON.parse(kayitliVeri));
-            }
+            tumHayaller.forEach(function(id) {
+                let kayit = localStorage.getItem(id);
+                if (kayit) {
+                    document.getElementById('item-' + id).classList.add('completed');
+                    aniyiEkrandaGoster(id, JSON.parse(kayit));
+                }
+            });
         });
 
-        // 3. Hayalin üstüne (Tike) Tıklama Olayı
         function tiklamaOlayi(id) {
+            if (localStorage.getItem(id)) { alert("Önce aşağıdaki Sil butonuna basmalısın."); return; }
             let kutu = document.getElementById('item-' + id);
-            let duzenleYeri = document.getElementById('edit-' + id);
-            
-            // Eğer zaten kayıtlı bir fotoğraf varsa uyarı ver
-            if (localStorage.getItem(id)) {
-                alert("Önce aşağıdaki Sil butonuna basmalısın.");
-                return;
-            }
-
-            // Tıklayınca tiki at ve yükleme ekranını aç
             kutu.classList.toggle('completed');
-            if (kutu.classList.contains('completed')) {
-                duzenleYeri.style.display = 'block';
-            } else {
-                duzenleYeri.style.display = 'none';
-            }
+            document.getElementById('edit-' + id).style.display = kutu.classList.contains('completed') ? 'block' : 'none';
         }
 
-        // 4. Fotoğrafı ve Notu Telefona/Bilgisayara Kaydetme Olayı
         function aniyiKaydet(id) {
             let not = document.getElementById('note-' + id).value;
-            let resimDosyasi = document.getElementById('file-' + id).files[0];
-            
-            if (resimDosyasi) {
-                // Resim seçildiyse onu okunabilir bir koda (URL) çevir
+            let dosya = document.getElementById('file-' + id).files[0];
+            if (dosya) {
                 let okuyucu = new FileReader();
                 okuyucu.onload = function(e) {
-                    let resimKodu = e.target.result;
-                    let toplananVeri = { yazi: not, fotograf: resimKodu };
-                    
-                    localStorage.setItem(id, JSON.stringify(toplananVeri)); // Hafızaya kaydet
-                    aniyiEkrandaGoster(id, toplananVeri); // Ekranda göster
+                    let veri = { yazi: not, fotograf: e.target.result };
+                    localStorage.setItem(id, JSON.stringify(veri));
+                    aniyiEkrandaGoster(id, veri);
                 }
-                okuyucu.readAsDataURL(resimDosyasi);
+                okuyucu.readAsDataURL(dosya);
             } else {
-                // Sadece yazı yazıldıysa (Resim yoksa)
-                let toplananVeri = { yazi: not, fotograf: "" };
-                localStorage.setItem(id, JSON.stringify(toplananVeri));
-                aniyiEkrandaGoster(id, toplananVeri);
+                let veri = { yazi: not, fotograf: "" };
+                localStorage.setItem(id, JSON.stringify(veri));
+                aniyiEkrandaGoster(id, veri);
             }
         }
 
-        // 5. Kaydedilen Anıyı Ekrana Basma Olayı
         function aniyiEkrandaGoster(id, veri) {
-            document.getElementById('edit-' + id).style.display = 'none'; // Yükleme yerini gizle
-            document.getElementById('display-' + id).style.display = 'block'; // Gösterim yerini aç
-            
-            document.getElementById('text-' + id).innerText = veri.yazi; // Yazıyı bas
-            
-            let resimYeri = document.getElementById('img-' + id);
-            if (veri.fotograf) {
-                resimYeri.src = veri.fotograf; // Resmi bas
-                resimYeri.style.display = 'block';
-            } else {
-                resimYeri.style.display = 'none';
+            document.getElementById('edit-' + id).style.display = 'none';
+            document.getElementById('display-' + id).style.display = 'block';
+            document.getElementById('text-' + id).innerText = veri.yazi;
+            let resim = document.getElementById('img-' + id);
+            if (veri.fotograf) { resim.src = veri.fotograf; resim.style.display = 'block'; } 
+            else { resim.style.display = 'none'; }
+        }
+
+        function aniyiSil(id) {
+            if (confirm("Silmek istediğine emin misin?")) {
+                localStorage.removeItem(id);
+                document.getElementById('item-' + id).classList.remove('completed');
+                document.getElementById('display-' + id).style.display = 'none';
+                document.getElementById('note-' + id).value = '';
+                document.getElementById('file-' + id).value = '';
             }
         }
 
-        // 6. Anıyı Silme Olayı
-        function aniyiSil(id) {
-            if (confirm("Bu anıyı tamamen silmek istediğine emin misin?")) {
-                localStorage.removeItem(id); // Hafızadan sil
-                
-                document.getElementById('item-' + id).classList.remove('completed'); // Tiki kaldır
-                document.getElementById('display-' + id).style.display = 'none'; // Fotoğrafı gizle
-                
-                document.getElementById('note-' + id).value = ''; // Eski yazıyı temizle
-                document.getElementById('file-' + id).value = ''; // Eski fotoğrafı temizle
+        // --- OYUN 1: AŞK ÖLÇER ---
+        function askOlc() {
+            let bar = document.getElementById('love-fill');
+            let sonuc = document.getElementById('love-result');
+            sonuc.innerHTML = "Ölçülüyor...";
+            bar.style.width = '100%';
+            setTimeout(() => {
+                sonuc.innerHTML = "Sonuç: %999 <br> (Hata: Cihaz bu kadar büyük bir aşkı ölçemedi! ♾️🤍)";
+            }, 2000);
+        }
+
+        // --- OYUN 2: KİMYASAL XOX ---
+        let xoxTahta = ["", "", "", "", "", "", "", "", ""];
+        let siraKalpte = true;
+        let xoxBitti = false;
+
+        function xoxOyna(index, hucre) {
+            if (xoxTahta[index] !== "" || xoxBitti) return;
+            let sembol = siraKalpte ? "🤍" : "🧪";
+            xoxTahta[index] = sembol;
+            hucre.innerText = sembol;
+            xoxKontrol();
+            if(!xoxBitti) {
+                siraKalpte = !siraKalpte;
+                document.getElementById('xox-status').innerText = "Sıra: " + (siraKalpte ? "🤍" : "🧪");
             }
         }
+
+        function xoxKontrol() {
+            const kazanmaDurumlari = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+            for (let durum of kazanmaDurumlari) {
+                let [a, b, c] = durum;
+                if (xoxTahta[a] && xoxTahta[a] === xoxTahta[b] && xoxTahta[a] === xoxTahta[c]) {
+                    document.getElementById('xox-status').innerText = "Kazanan: " + xoxTahta[a] + " 🎉";
+                    xoxBitti = true; return;
+                }
+            }
+            if(!xoxTahta.includes("")) { document.getElementById('xox-status').innerText = "Berabere! 😅"; xoxBitti = true; }
+        }
+
+        function xoxSifirla() {
+            xoxTahta = ["", "", "", "", "", "", "", "", ""];
+            siraKalpte = true; xoxBitti = false;
+            document.getElementById('xox-status').innerText = "Sıra sende: 🤍";
+            document.querySelectorAll('.xox-cell').forEach(hucre => hucre.innerText = "");
+        }
+
+        // --- OYUN 3: HAFIZA OYUNU ---
+        const kartlar = document.querySelectorAll('.memory-card');
+        let kartAcik = false, tahtaKilitli = false, ilkKart, ikinciKart, eslesmeSayisi = 0;
+
+        function kartCevir() {
+            if (tahtaKilitli || this === ilkKart) return;
+            this.classList.add('flip');
+            if (!kartAcik) { kartAcik = true; ilkKart = this; return; }
+            ikinciKart = this;
+            let eslestiMi = ilkKart.dataset.isim === ikinciKart.dataset.isim;
+            eslestiMi ? kartlariKapat() : kartlariGeriCevir();
+        }
+
+        function kartlariKapat() {
+            ilkKart.removeEventListener('click', kartCevir);
+            ikinciKart.removeEventListener('click', kartCevir);
+            [kartAcik, tahtaKilitli, ilkKart, ikinciKart] = [false, false, null, null];
+            eslesmeSayisi++;
+            if(eslesmeSayisi === 4) setTimeout(() => document.getElementById('win-message').style.display = 'block', 500);
+        }
+
+        function kartlariGeriCevir() {
+            tahtaKilitli = true;
+            setTimeout(() => {
+                ilkKart.classList.remove('flip'); ikinciKart.classList.remove('flip');
+                [kartAcik, tahtaKilitli, ilkKart, ikinciKart] = [false, false, null, null];
+            }, 1000);
+        }
+
+        (function karistir() { kartlar.forEach(kart => kart.style.order = Math.floor(Math.random() * 8)); })();
+        kartlar.forEach(kart => kart.addEventListener('click', kartCevir));
+
     </script>
 </body>
 </html>
