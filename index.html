@@ -22,19 +22,27 @@
         .heart { position: absolute; font-size: 20px; opacity: 0.6; animation: floatUp 8s linear infinite; }
         @keyframes floatUp { 0% { transform: translateY(100vh) scale(0.5); opacity: 0; } 50% { opacity: 0.5; } 100% { transform: translateY(-10vh) scale(1.2); opacity: 0; } }
 
-        .night-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; opacity: 0; transition: 1s; overflow: hidden;}
+        /* SAHİLDE KAMP ATEŞİ VE GECE ANİMASYONU */
+        .night-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; opacity: 0; transition: 1s; overflow: hidden; }
         body.theme-gece .night-bg { opacity: 1; }
-        .fire-glow { position: absolute; bottom: -100px; left: 50%; transform: translateX(-50%); width: 150vw; height: 60vh; background: radial-gradient(ellipse at bottom, rgba(255, 100, 20, 0.3) 0%, rgba(200, 50, 0, 0.1) 40%, transparent 70%); animation: flicker 3s infinite alternate; }
+        
+        /* Sahil Çizgisi ve Kamp Ateşi Efekti */
+        .beach-sand { position: absolute; bottom: 0; width: 100%; height: 25vh; background: linear-gradient(to top, #1a1612, #0b0c10); z-index: -1; }
+        .campfire { position: absolute; bottom: 15vh; left: 50%; transform: translateX(-50%); width: 60px; height: 60px; background: radial-gradient(circle, #ff5722 0%, #ff9800 50%, transparent 80%); border-radius: 50%; filter: blur(8px); animation: fireFlicker 1.5s infinite alternate; }
+        .fire-glow { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 100vw; height: 50vh; background: radial-gradient(ellipse at bottom, rgba(255, 110, 30, 0.25) 0%, rgba(200, 50, 0, 0.05) 50%, transparent 80%); animation: flicker 3s infinite alternate; }
+        
+        @keyframes fireFlicker { 0% { transform: translateX(-50%) scale(0.95); opacity: 0.8; } 100% { transform: translateX(-50%) scale(1.05); opacity: 1; } }
         @keyframes flicker { 0% { opacity: 0.7; transform: translateX(-50%) scale(1); } 100% { opacity: 1; transform: translateX(-50%) scale(1.05); } }
-        .aurora-bg { position: absolute; bottom: 0; left: 0; right: 0; height: 60%; background: radial-gradient(circle at 20% 80%, rgba(0, 255, 153, 0.1) 0%, transparent 40%), radial-gradient(circle at 80% 90%, rgba(100, 50, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 50% 100%, rgba(0, 150, 255, 0.1) 0%, transparent 50%); z-index: 1; }
+
+        .aurora-bg { position: absolute; top: 0; left: 0; right: 0; height: 60%; background: radial-gradient(circle at 20% 30%, rgba(0, 255, 153, 0.08) 0%, transparent 40%), radial-gradient(circle at 80% 20%, rgba(100, 50, 255, 0.08) 0%, transparent 50%); z-index: -1; }
         .shooting-star { position: absolute; width: 3px; height: 3px; background: #fff; border-radius: 50%; box-shadow: 0 0 6px 2px rgba(255,255,255,0.8); animation: shooting 5s linear infinite; opacity: 0; }
         .shooting-star::after { content: ''; position: absolute; top: 50%; transform: translateY(-50%); width: 80px; height: 1px; background: linear-gradient(90deg, #fff, transparent); }
-        .star1 { top: -10%; left: 70%; animation-delay: 0s; }
-        .star2 { top: -20%; left: 90%; animation-delay: 2s; }
-        .star3 { top: 10%; left: 110%; animation-delay: 4.5s; }
+        .star1 { top: 10%; left: 70%; animation-delay: 0s; }
+        .star2 { top: 20%; left: 90%; animation-delay: 2s; }
+        .star3 { top: 15%; left: 40%; animation-delay: 4.5s; }
         @keyframes shooting { 0% { transform: translateX(0) translateY(0) rotate(-45deg); opacity: 1; } 15% { transform: translateX(-300px) translateY(300px) rotate(-45deg); opacity: 0; } 100% { opacity: 0; } }
 
-        /* 2. MENÜ (SEKMELER) - MOBİL UYUMLU VE SABİT */
+        /* 2. MENÜ (SEKMELER) */
         .tab-menu { display: flex; position: sticky; top: 0; z-index: 1000; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .tab-menu::-webkit-scrollbar { display: none; }
         .tab-btn { background: none; border: none; padding: 18px 22px; font-family: 'Cinzel', serif; font-size: 0.95em; font-weight: 600; color: #666; cursor: pointer; flex: 0 0 auto; scroll-snap-align: start; transition: 0.3s; white-space: nowrap; }
@@ -96,16 +104,24 @@
         .ff3 { bottom: 20%; left: 30%; animation: fireflyMove 6s infinite alternate ease-in-out; animation-delay: 2s;}
         @keyframes fireflyMove { 0% { transform: translate(0, 0) scale(1); opacity: 0.3; } 100% { transform: translate(20px, -20px) scale(1.5); opacity: 0.9; } }
 
-        /* 7. AMBILIGHT GALERİ VE OKLAR */
+        /* 7. KAPSAYICI AMBILIGHT ÇERÇEVESİ (Kusursuz Görünüm ve Işık Yayılımı) */
         .slider-wrapper { position: relative; width: 100%; max-width: 600px; margin: 0 auto; }
         .slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; gap: 40px; padding: 20px 0 40px 0; }
         .slider::-webkit-scrollbar { display: none; }
-        .slide { flex: 0 0 100%; scroll-snap-align: center; position: relative; }
-        .ambilight-shadow { position: absolute; top: 0; left: 0; width: 100%; height: 100%; filter: blur(25px); opacity: 0.8; transform: scale(1.05); z-index: -1; border-radius: 20px; }
-        .media-front { position: relative; width: 100%; border-radius: 15px; z-index: 1; box-shadow: 0 10px 30px rgba(0,0,0,0.8); display: block; }
+        .slide { flex: 0 0 100%; scroll-snap-align: center; position: relative; display: flex; flex-direction: column; align-items: center; }
+        
+        /* Ambilight Çerçeve Konteynerİ */
+        .ambilight-frame { position: relative; width: 100%; border-radius: 20px; padding: 10px; background: rgba(255,255,255,0.03); box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+        
+        /* Arkadaki Işık Huzmesi */
+        .ambilight-glow { position: absolute; top: 0; left: 0; width: 100%; height: 100%; filter: blur(30px); opacity: 0.85; transform: scale(1.08); z-index: 1; border-radius: 20px; object-fit: cover; }
+        
+        /* Öndeki Net Medya */
+        .media-front { position: relative; width: 100%; border-radius: 12px; z-index: 2; display: block; outline: none; }
+        
         .slide-caption { font-family: 'Caveat', cursive; font-size: 1.8em; text-align: center; margin-top: 20px; color: #ccc; }
 
-        .slider-btn { position: absolute; top: 40%; transform: translateY(-50%); background: rgba(255,255,255,0.8); border: none; width: 45px; height: 45px; border-radius: 50%; font-size: 1.3em; color: #15151b; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 10; transition: 0.2s; }
+        .slider-btn { position: absolute; top: 45%; transform: translateY(-50%); background: rgba(255,255,255,0.8); border: none; width: 45px; height: 45px; border-radius: 50%; font-size: 1.3em; color: #15151b; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 10; transition: 0.2s; }
         .slider-btn:hover { background: #fff; transform: translateY(-50%) scale(1.1); }
         .slider-btn.prev { left: -50px; }
         .slider-btn.next { right: -50px; }
@@ -154,8 +170,10 @@
     </div>
 
     <div class="night-bg">
-        <div class="aurora-bg"></div>
+        <div class="beach-sand"></div>
+        <div class="campfire"></div>
         <div class="fire-glow"></div>
+        <div class="aurora-bg"></div>
         <div style="position:absolute; top:10%; left:20%; color:#fff; font-size:10px; opacity:0.5;">✦</div>
         <div style="position:absolute; top:30%; left:80%; color:#fff; font-size:12px; opacity:0.8;">✦</div>
         <div style="position:absolute; top:15%; left:60%; color:#fff; font-size:8px; opacity:0.4;">✦</div>
@@ -164,7 +182,7 @@
         <div class="shooting-star star3"></div>
     </div>
 
-    <!-- MENÜ (MOBİLDE ÜSTTE SABİT) -->
+    <!-- MENÜ -->
     <nav class="tab-menu">
         <button class="tab-btn active" onclick="openTab('giris', this, 'theme-doga')">Giriş</button>
         <button class="tab-btn" onclick="openTab('hayaller', this, 'theme-doga')">Hayallerimiz</button>
@@ -255,7 +273,7 @@
         </div>
     </section>
 
-    <!-- 5. FOTOĞRAFLAR -->
+    <!-- 5. FOTOĞRAFLAR (Kapsayıcı Ambilight Çerçevesi) -->
     <section id="fotograflar" class="content-section">
         <h2>Anı Galerimiz</h2>
         <p style="text-align:center; color:#888; font-size:0.9em;">(Sağa ve sola kaydırabilirsin)</p>
@@ -263,20 +281,29 @@
         <div class="slider-wrapper">
             <button class="slider-btn prev" onclick="scrollSlider('foto-slider', -1)">&#10094;</button>
             <div class="slider" id="foto-slider">
+                
                 <div class="slide">
-                    <img src="foto1.jpg" class="ambilight-shadow"><img src="foto1.jpg" class="media-front">
-                    <p class="slide-caption">Gözlerindeki o ışık...</p>
+                    <div class="ambilight-frame">
+                        <img src="foto1.jpg" class="ambilight-glow">
+                        <img src="foto1.jpg" class="media-front">
+                    </div>
+                    <p class="slide-caption">Gülüşündekii huzuurr🫠🫠.</p>
                 </div>
+                
                 <div class="slide">
-                    <img src="foto2.jpg" class="ambilight-shadow"><img src="foto2.jpg" class="media-front">
+                    <div class="ambilight-frame">
+                        <img src="foto2.jpg" class="ambilight-glow">
+                        <img src="foto2.jpg" class="media-front">
+                    </div>
                     <p class="slide-caption">İyi ki sen.</p>
                 </div>
+
             </div>
             <button class="slider-btn next" onclick="scrollSlider('foto-slider', 1)">&#10095;</button>
         </div>
     </section>
 
-    <!-- 6. VİDEOLAR -->
+    <!-- 6. VİDEOLAR (Kapsayıcı Ambilight Çerçevesi) -->
     <section id="videolar" class="content-section">
         <h2>Birlikte Çekilenler</h2>
         <p style="text-align:center; color:#888; font-size:0.9em;">(Yana kaydırarak değiştirebilirsin)</p>
@@ -284,11 +311,15 @@
         <div class="slider-wrapper">
             <button class="slider-btn prev" onclick="scrollSlider('video-slider', -1)">&#10094;</button>
             <div class="slider" id="video-slider">
+                
                 <div class="slide">
-                    <div class="ambilight-shadow" style="background: rgba(100,150,255,0.4);"></div>
-                    <video controls class="media-front"><source src="video1.mp4" type="video/mp4"></video>
-                    <p class="slide-caption">O tatilimizden...</p>
+                    <div class="ambilight-frame">
+                        <div class="ambilight-glow" style="background: rgba(100,150,255,0.5);"></div>
+                        <video controls class="media-front"><source src="video1.mp4" type="video/mp4"></video>
+                    </div>
+                    <p class="slide-caption">Bebişiminnn ilk ritmii.</p>
                 </div>
+
             </div>
             <button class="slider-btn next" onclick="scrollSlider('video-slider', 1)">&#10095;</button>
         </div>
@@ -355,7 +386,6 @@
 
     <!-- JAVASCRIPT -->
     <script>
-        // --- SEKMELER VE TEMALAR ---
         function openTab(tabId, btnElement, themeClass) {
             document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -363,7 +393,6 @@
             btnElement.classList.add('active');
             document.body.className = themeClass; 
 
-            // Mobil telefonda sekmeye tıklandığında menünün o sekme üzerine kayması için
             btnElement.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
 
             if(tabId === 'masal') {
@@ -375,14 +404,12 @@
             }
         }
 
-        // --- SLİDER (KAYDIRMA) OKLARI ---
         function scrollSlider(sliderId, direction) {
             const slider = document.getElementById(sliderId);
             const scrollAmount = slider.clientWidth;
             slider.scrollBy({ left: scrollAmount * direction, behavior: 'smooth' });
         }
 
-        // --- HAYALLER HARİTASI (HAFIZA) ---
         let tumHayaller = ['hayal1', 'hayal2']; 
         document.addEventListener("DOMContentLoaded", function() {
             tumHayaller.forEach(function(id) {
@@ -438,7 +465,6 @@
             }
         }
 
-        // --- OYUN 1: AŞK ÖLÇER ---
         function askOlc() {
             let bar = document.getElementById('love-fill');
             let sonuc = document.getElementById('love-result');
@@ -449,7 +475,6 @@
             }, 2000);
         }
 
-        // --- OYUN 2: KİMYASAL XOX ---
         let xoxTahta = ["", "", "", "", "", "", "", "", ""];
         let siraKalpte = true;
         let xoxBitti = false;
@@ -485,7 +510,6 @@
             document.querySelectorAll('.xox-cell').forEach(hucre => hucre.innerText = "");
         }
 
-        // --- OYUN 3: HAFIZA OYUNU ---
         const kartlar = document.querySelectorAll('.memory-card');
         let kartAcik = false, tahtaKilitli = false, ilkKart, ikinciKart, eslesmeSayisi = 0;
 
