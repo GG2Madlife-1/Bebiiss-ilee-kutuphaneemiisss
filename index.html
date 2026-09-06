@@ -14,7 +14,7 @@
         body.theme-pembe { background-color: #f7e8e9; color: #5a4a4a; }
         body.theme-oyun { background-color: #e6e6fa; color: #4a3f35; }
         body.theme-gece { background-color: #0b0c10; color: #e0e0e0; }
-        body.theme-sinema { background-color: #15151b; color: #fff; }
+        body.theme-sinema { background-color: rgba(11, 12, 16, 0.9); color: #fff; }
 
         /* ARKA PLAN EFEKTLERİ */
         .hearts-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; opacity: 0; transition: 1s; }
@@ -22,18 +22,13 @@
         .heart { position: absolute; font-size: 20px; opacity: 0.6; animation: floatUp 8s linear infinite; }
         @keyframes floatUp { 0% { transform: translateY(100vh) scale(0.5); opacity: 0; } 50% { opacity: 0.5; } 100% { transform: translateY(-10vh) scale(1.2); opacity: 0; } }
 
-        /* SAHİLDE KAMP ATEŞİ VE GECE ANİMASYONU */
         .night-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; opacity: 0; transition: 1s; overflow: hidden; }
-        body.theme-gece .night-bg { opacity: 1; }
-        
-        /* Sahil Çizgisi ve Kamp Ateşi Efekti */
+        body.theme-gece .night-bg, body.theme-sinema .night-bg { opacity: 1; }
         .beach-sand { position: absolute; bottom: 0; width: 100%; height: 25vh; background: linear-gradient(to top, #1a1612, #0b0c10); z-index: -1; }
         .campfire { position: absolute; bottom: 15vh; left: 50%; transform: translateX(-50%); width: 60px; height: 60px; background: radial-gradient(circle, #ff5722 0%, #ff9800 50%, transparent 80%); border-radius: 50%; filter: blur(8px); animation: fireFlicker 1.5s infinite alternate; }
         .fire-glow { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 100vw; height: 50vh; background: radial-gradient(ellipse at bottom, rgba(255, 110, 30, 0.25) 0%, rgba(200, 50, 0, 0.05) 50%, transparent 80%); animation: flicker 3s infinite alternate; }
-        
         @keyframes fireFlicker { 0% { transform: translateX(-50%) scale(0.95); opacity: 0.8; } 100% { transform: translateX(-50%) scale(1.05); opacity: 1; } }
         @keyframes flicker { 0% { opacity: 0.7; transform: translateX(-50%) scale(1); } 100% { opacity: 1; transform: translateX(-50%) scale(1.05); } }
-
         .aurora-bg { position: absolute; top: 0; left: 0; right: 0; height: 60%; background: radial-gradient(circle at 20% 30%, rgba(0, 255, 153, 0.08) 0%, transparent 40%), radial-gradient(circle at 80% 20%, rgba(100, 50, 255, 0.08) 0%, transparent 50%); z-index: -1; }
         .shooting-star { position: absolute; width: 3px; height: 3px; background: #fff; border-radius: 50%; box-shadow: 0 0 6px 2px rgba(255,255,255,0.8); animation: shooting 5s linear infinite; opacity: 0; }
         .shooting-star::after { content: ''; position: absolute; top: 50%; transform: translateY(-50%); width: 80px; height: 1px; background: linear-gradient(90deg, #fff, transparent); }
@@ -42,42 +37,44 @@
         .star3 { top: 15%; left: 40%; animation-delay: 4.5s; }
         @keyframes shooting { 0% { transform: translateX(0) translateY(0) rotate(-45deg); opacity: 1; } 15% { transform: translateX(-300px) translateY(300px) rotate(-45deg); opacity: 0; } 100% { opacity: 0; } }
 
-        /* 2. MENÜ (SEKMELER) */
-        .tab-menu { display: flex; position: sticky; top: 0; z-index: 1000; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        /* MENÜ */
+        .tab-menu { display: flex; justify-content: center; position: sticky; top: 0; z-index: 1000; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .tab-menu::-webkit-scrollbar { display: none; }
         .tab-btn { background: none; border: none; padding: 18px 22px; font-family: 'Cinzel', serif; font-size: 0.95em; font-weight: 600; color: #666; cursor: pointer; flex: 0 0 auto; scroll-snap-align: start; transition: 0.3s; white-space: nowrap; }
         .tab-btn.active { color: #d4a373; border-bottom: 3px solid #d4a373; }
-        
-        body.theme-gece .tab-menu, body.theme-sinema .tab-menu { background: rgba(0, 0, 0, 0.8); }
+        body.theme-gece .tab-menu, body.theme-sinema .tab-menu { background: rgba(0, 0, 0, 0.7); }
         body.theme-gece .tab-btn, body.theme-sinema .tab-btn { color: #aaa; }
-        body.theme-gece .tab-btn.active { color: #f8e9a1; border-bottom-color: #f8e9a1; }
-        body.theme-sinema .tab-btn.active { color: #fff; border-bottom-color: #fff; }
+        body.theme-gece .tab-btn.active, body.theme-sinema .tab-btn.active { color: #f8e9a1; border-bottom-color: #f8e9a1; }
 
-        /* 3. İÇERİK BÖLÜMLERİ */
+        /* İÇERİK BÖLÜMLERİ */
         .content-section { display: none; padding: 30px 20px; max-width: 900px; margin: 0 auto; animation: fadeIn 0.4s ease; box-sizing: border-box; }
         .content-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
         h1, h2 { font-family: 'Cinzel', serif; text-align: center; color: #d4a373; margin-bottom: 25px; }
         body.theme-oyun h2, body.theme-oyun h3 { color: #8e7cc3; font-family: 'Cinzel', serif; text-align:center;}
-        body.theme-gece h1, body.theme-gece h2 { color: #f8e9a1; text-shadow: 0 0 15px rgba(255,100,20,0.5); }
-        body.theme-sinema h1, body.theme-sinema h2 { color: #fff; }
+        body.theme-gece h1, body.theme-gece h2, body.theme-sinema h1, body.theme-sinema h2 { color: #f8e9a1; text-shadow: 0 0 15px rgba(255,100,20,0.5); }
 
-        /* 4. ŞARKI KARTLARI */
-        .vine-book { background: #fffdf7; border-radius: 12px; padding: 30px 20px; border: 1px solid #eaddcf; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        /* GİRİŞ SAYFASI */
+        .vine-book { background: #fffdf7; border-radius: 12px; padding: 40px 30px; border: 1px solid #eaddcf; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); position: relative; overflow: hidden; }
+        .vine-deco { position: absolute; font-size: 2.5em; opacity: 0.8; pointer-events: none; }
+        .vine-tl { top: -10px; left: -10px; transform: rotate(-20deg); }
+        .vine-br { bottom: -10px; right: -10px; transform: rotate(160deg); font-size: 2em; }
+        .vine-tr { top: -10px; right: -10px; transform: rotate(20deg); }
+        .vine-bl { bottom: -10px; left: -10px; transform: rotate(-160deg); }
+
+        /* ŞARKI KARTLARI */
         .song-card { display: flex; align-items: center; background: rgba(255,255,255,0.7); padding: 15px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(212,138,148,0.15); border-left: 5px solid #ffc4cf; transition: all 0.5s; position: relative; overflow: hidden;}
         .song-info { flex-grow: 1; z-index: 2; text-align: left;}
         .song-title { font-weight: 600; font-size: 1.1em; margin-bottom: 3px; }
         .song-desc { font-size: 0.9em; color: #777; }
         audio { height: 40px; width: 100%; max-width: 250px; outline: none; z-index: 2;}
-        
-        body.theme-gece .song-card { background: rgba(0, 0, 0, 0.4); border-left: 5px solid #f8e9a1; box-shadow: 0 5px 15px rgba(255,100,20,0.1); color: #eaddcf; border: 1px solid rgba(248,233,161,0.2); }
+        body.theme-gece .song-card { background: rgba(0, 0, 0, 0.5); border-left: 5px solid #f8e9a1; box-shadow: 0 5px 15px rgba(255,100,20,0.15); color: #eaddcf; border: 1px solid rgba(248,233,161,0.2); }
         body.theme-gece .song-desc { color: #aaa; }
         .magic-note { position: absolute; right: 20px; font-size: 1.5em; opacity: 0; color: #f8e9a1; }
         body.theme-gece .song-card:hover .magic-note { animation: floatNote 2s infinite ease-out; }
         @keyframes floatNote { 0% { transform: translateY(10px) scale(0.8); opacity: 0; } 50% { opacity: 0.8; } 100% { transform: translateY(-30px) scale(1.2); opacity: 0; } }
 
-        /* 5. HAYALLER HARİTASI */
+        /* HAYALLER HARİTASI */
         .list-container { background: #fff; border-radius: 15px; padding: 15px 20px; margin-bottom: 15px; border-left: 5px solid #d4a373; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .list-item { display: flex; align-items: center; font-size: 1.1em; cursor: pointer; color: #4a3f35;}
         .checkbox { width: 25px; height: 25px; min-width: 25px; border: 2px solid #d4a373; border-radius: 5px; margin-right: 15px; display: flex; align-items: center; justify-content: center; color: transparent; font-weight: bold; }
@@ -92,7 +89,7 @@
         .memory-display p { font-family: 'Caveat', cursive; font-size: 1.6em; color: #4a3f35; }
         .delete-btn { background: none; border: 1px solid #ff7675; color: #ff7675; padding: 5px 15px; border-radius: 15px; cursor: pointer; margin-top:10px; }
 
-        /* 6. MASAL DEFTERİ */
+        /* MASAL DEFTERİ */
         .story-chapter { font-family: 'Cinzel', serif; font-size: 1.5em; color: #f8e9a1; margin-top: 30px; border-bottom: 1px solid rgba(248,233,161,0.2); padding-bottom: 8px; }
         .story-text { font-family: 'Caveat', cursive; font-size: 1.8em; line-height: 1.6; color: #eaddcf; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); }
         .reveal-text { opacity: 0; transform: translateY(20px); transition: all 1s ease; }
@@ -104,58 +101,56 @@
         .ff3 { bottom: 20%; left: 30%; animation: fireflyMove 6s infinite alternate ease-in-out; animation-delay: 2s;}
         @keyframes fireflyMove { 0% { transform: translate(0, 0) scale(1); opacity: 0.3; } 100% { transform: translate(20px, -20px) scale(1.5); opacity: 0.9; } }
 
-        /* 7. KAPSAYICI AMBILIGHT ÇERÇEVESİ (Kusursuz Görünüm ve Işık Yayılımı) */
+        /* AMBILIGHT GALERİ VE OKLAR */
         .slider-wrapper { position: relative; width: 100%; max-width: 600px; margin: 0 auto; }
         .slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; gap: 40px; padding: 20px 0 40px 0; }
         .slider::-webkit-scrollbar { display: none; }
         .slide { flex: 0 0 100%; scroll-snap-align: center; position: relative; display: flex; flex-direction: column; align-items: center; }
-        
-        /* Ambilight Çerçeve Konteynerİ */
-        .ambilight-frame { position: relative; width: 100%; border-radius: 20px; padding: 10px; background: rgba(255,255,255,0.03); box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
-        
-        /* Arkadaki Işık Huzmesi */
-        .ambilight-glow { position: absolute; top: 0; left: 0; width: 100%; height: 100%; filter: blur(30px); opacity: 0.85; transform: scale(1.08); z-index: 1; border-radius: 20px; object-fit: cover; }
-        
-        /* Öndeki Net Medya */
+        .ambilight-frame { position: relative; width: 100%; border-radius: 20px; padding: 10px; background: rgba(255,255,255,0.03); box-shadow: 0 15px 35px rgba(0,0,0,0.6); }
+        .ambilight-glow { position: absolute; top: 0; left: 0; width: 100%; height: 100%; filter: blur(35px) saturate(1.5); opacity: 0.85; transform: scale(1.05); z-index: 1; border-radius: 20px; object-fit: cover; }
         .media-front { position: relative; width: 100%; border-radius: 12px; z-index: 2; display: block; outline: none; }
-        
-        .slide-caption { font-family: 'Caveat', cursive; font-size: 1.8em; text-align: center; margin-top: 20px; color: #ccc; }
-
+        .slide-caption { font-family: 'Caveat', cursive; font-size: 1.8em; text-align: center; margin-top: 20px; color: #eaddcf; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); }
         .slider-btn { position: absolute; top: 45%; transform: translateY(-50%); background: rgba(255,255,255,0.8); border: none; width: 45px; height: 45px; border-radius: 50%; font-size: 1.3em; color: #15151b; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 10; transition: 0.2s; }
         .slider-btn:hover { background: #fff; transform: translateY(-50%) scale(1.1); }
-        .slider-btn.prev { left: -50px; }
-        .slider-btn.next { right: -50px; }
+        .slider-btn.prev { left: -30px; }
+        .slider-btn.next { right: -30px; }
 
-        /* 8. OYUN ODASI */
+        /* OYUN ODASI GENEL */
         .game-section { background: rgba(255,255,255,0.6); padding: 20px; border-radius: 20px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 2px solid #fff; }
-        .love-meter-box { text-align: center; }
+        .game-btn { background: #8e7cc3; color: white; border: none; padding: 10px 20px; font-size: 1.1em; border-radius: 20px; font-family: 'Quicksand'; cursor: pointer; transition: 0.2s; font-weight: bold; margin: 5px; }
+        .game-btn:active { transform: scale(0.95); }
+        .game-btn:disabled { background: #ccc; cursor: not-allowed; }
+        .game-result { font-family: 'Caveat', cursive; font-size: 1.8em; color: #d63031; margin-top: 15px; min-height: 40px; text-align: center; }
+
+        /* ŞARKI BİLMECE (YENİ) */
+        .quiz-input { width: 80%; padding: 12px; border-radius: 25px; border: 2px solid #8e7cc3; text-align: center; font-family: 'Quicksand'; font-size: 1.1em; outline: none; margin-bottom: 10px; }
+        .song-timer-display { font-family: 'Cinzel', serif; font-size: 1.3em; color: #d4a373; font-weight: bold; margin: 10px 0; }
+
+        /* RENK HAFIZASI */
+        .color-box-game { transition: 0.3s; }
+        #user-color-picker { width: 100px; height: 60px; cursor: pointer; border: 3px solid #d4a373; border-radius: 10px; background: none; }
+
+        /* AŞK ÖLÇER & XOX */
         .meter-bar { width: 100%; height: 25px; background: #ddd; border-radius: 20px; margin: 20px 0; overflow: hidden; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1); }
         .meter-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%); transition: width 2s cubic-bezier(0.4, 0, 0.2, 1); }
-        .love-btn { background: #8e7cc3; color: white; border: none; padding: 12px 30px; font-size: 1.1em; border-radius: 25px; font-family: 'Quicksand'; cursor: pointer; transition: 0.2s; font-weight: bold;}
-        .love-btn:active { transform: scale(0.95); }
-        #love-result { font-family: 'Caveat', cursive; font-size: 1.8em; color: #d63031; margin-top: 15px; min-height: 50px; }
-
         .xox-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 280px; margin: 15px auto; }
         .xox-cell { background: #fff; aspect-ratio: 1; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 2.5em; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: 0.2s; }
-        .xox-cell:hover { background: #fdfbf7; }
         .xox-status { text-align: center; font-size: 1.1em; font-weight: bold; margin-bottom: 10px; color: #666; }
-        .xox-reset { display: block; margin: 15px auto 0; background: #ddd; border: none; padding: 8px 20px; border-radius: 15px; cursor: pointer; font-family: 'Quicksand'; }
 
+        /* HAFIZA KARTLARI (Görselli) */
         .game-board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; max-width: 450px; margin: 0 auto; perspective: 1000px; }
         .memory-card { width: 100%; aspect-ratio: 1; position: relative; cursor: pointer; transform-style: preserve-3d; transition: transform 0.5s; }
         .memory-card.flip { transform: rotateY(180deg); }
-        .front-face, .back-face { position: absolute; width: 100%; height: 100%; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 2.2em; backface-visibility: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .front-face, .back-face { position: absolute; width: 100%; height: 100%; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 2.2em; backface-visibility: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); overflow: hidden; }
         .front-face { background: #fff; transform: rotateY(180deg); }
         .back-face { background: #8e7cc3; color: white; font-size: 1.8em; }
-        #win-message { display: none; text-align: center; font-family: 'Caveat', cursive; font-size: 1.8em; color: #d63031; margin-top: 20px; }
-        
+        .card-img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
+
         @media (max-width: 768px) {
             .slider-btn { display: none; }
             .game-board { grid-template-columns: repeat(4, 1fr); gap: 8px; } 
-            .front-face, .back-face { font-size: 1.8em; }
             .song-card { flex-direction: column; text-align: center; }
             audio { max-width: 100%; margin-top: 10px; }
-            .song-info { text-align: center; }
         }
     </style>
 </head>
@@ -197,11 +192,13 @@
     <!-- 1. GİRİŞ -->
     <section id="giris" class="content-section active">
         <div class="vine-book">
+            <div class="vine-deco vine-tl">🌿</div>
+            <div class="vine-deco vine-br">🌸</div>
+            <div class="vine-deco vine-tr">🌿</div>
+            <div class="vine-deco vine-bl">🍃</div>
             <h1>Sihirli Dünyamıza Hoş Geldin</h1>
             <p>Sevgilim, bu defa sana bambaşka bir dünya hazırladım.<br>Aşağıdaki videoyu izledikten sonra sekmelerde kaybolabilirsin...</p>
-            <video controls class="media-front" style="margin-top:20px;">
-                <source src="tanitim.mp4" type="video/mp4">
-            </video>
+            <video controls class="media-front" style="margin-top:20px;"><source src="tanitim.mp4" type="video/mp4"></video>
         </div>
     </section>
 
@@ -210,32 +207,15 @@
         <h2>Anı Haritamız</h2>
         <div class="list-container">
             <div class="list-item" id="item-hayal1" onclick="tiklamaOlayi('hayal1')">
-                <div class="checkbox">✔</div>
-                <div class="item-text">Sabaha kadar Modern Family izlemek</div>
+                <div class="checkbox">✔</div><div class="item-text">Sabaha kadar Modern Family izlemek</div>
             </div>
             <div class="memory-edit" id="edit-hayal1">
                 <textarea id="note-hayal1" rows="2" placeholder="O güne dair notunu yaz..."></textarea>
-                <input type="file" id="file-hayal1" accept="image/*"> <br>
+                <input type="file" id="file-hayal1" accept="image/*"><br>
                 <button class="save-btn" onclick="aniyiKaydet('hayal1')">Kaydet 🤍</button>
             </div>
             <div class="memory-display" id="display-hayal1">
-                <img id="img-hayal1" src=""><p id="text-hayal1"></p>
-                <button class="delete-btn" onclick="aniyiSil('hayal1')">Sil / Düzenle 🗑️</button>
-            </div>
-        </div>
-        <div class="list-container">
-            <div class="list-item" id="item-hayal2" onclick="tiklamaOlayi('hayal2')">
-                <div class="checkbox">✔</div>
-                <div class="item-text">Kendi evimizi dekore etmek</div>
-            </div>
-            <div class="memory-edit" id="edit-hayal2">
-                <textarea id="note-hayal2" rows="2" placeholder="O güne dair notunu yaz..."></textarea>
-                <input type="file" id="file-hayal2" accept="image/*"> <br>
-                <button class="save-btn" onclick="aniyiKaydet('hayal2')">Kaydet 🤍</button>
-            </div>
-            <div class="memory-display" id="display-hayal2">
-                <img id="img-hayal2" src=""><p id="text-hayal2"></p>
-                <button class="delete-btn" onclick="aniyiSil('hayal2')">Sil / Düzenle 🗑️</button>
+                <img id="img-hayal1" src=""><p id="text-hayal1"></p><button class="delete-btn" onclick="aniyiSil('hayal1')">Sil / Düzenle 🗑️</button>
             </div>
         </div>
     </section>
@@ -257,75 +237,48 @@
     <section id="masal" class="content-section">
         <h2>Ateş Başında Anılar...</h2>
         <div class="masal-container">
-            <div class="firefly ff1"></div>
-            <div class="firefly ff2"></div>
-            <div class="firefly ff3"></div>
-
+            <div class="firefly ff1"></div><div class="firefly ff2"></div><div class="firefly ff3"></div>
             <div class="reveal-text">
                 <div class="story-chapter">Bölüm 1: Yıldız Tozu ve Deneyler</div>
-                <p class="story-text">Evrenin en ücra köşesinde, zamanın sadece çay demlenene kadar akıtıldığı küçük bir laboratuvar varmış. Orada, imkansız formülleri aşkla çözen bir mühendis ile dünyayı gülüşüyle ısıtan bir kimya mühendisii yaşarmış. Deney tüplerinden sızan dumanlar gökyüzüne karışır, her biri parlayan birer kuyruklu yıldıza dönüşürmüş...</p>
-            </div>
-
-            <div class="reveal-text" style="transition-delay: 0.8s;">
-                <div class="story-chapter">Bölüm 2: Sonsuzluğun Frekansı</div>
-                <p class="story-text">Günlerden bir gün, kamp ateşinin çıtırtısı gitar tellerindeki akordla buluşmuş. O an, havada süzülen tüm notesiz melodiler tarihin en güzel şarkısını oluşturmuş. Masal bu ya; iki ayrı kalbin frekansı aynı anda titreşmiş ve evren o saniyeden sonra sadece onların hikayesini yazmaya başlamış...</p>
+                <p class="story-text">Evrenin en ücra köşesinde, zamanın sadece çay demlenene kadar akıtıldığı küçük bir laboratuvar varmış. Orada, imkansız formülleri aşkla çözen bir mühendis ile dünyayı gülüşüyle ısıtan bir kimya mühendisiii yaşarmış...</p>
             </div>
         </div>
     </section>
 
-    <!-- 5. FOTOĞRAFLAR (Kapsayıcı Ambilight Çerçevesi) -->
+    <!-- 5. FOTOĞRAFLAR -->
     <section id="fotograflar" class="content-section">
         <h2>Anı Galerimiz</h2>
-        <p style="text-align:center; color:#888; font-size:0.9em;">(Sağa ve sola kaydırabilirsin)</p>
-        
         <div class="slider-wrapper">
             <button class="slider-btn prev" onclick="scrollSlider('foto-slider', -1)">&#10094;</button>
             <div class="slider" id="foto-slider">
-                
                 <div class="slide">
                     <div class="ambilight-frame">
-                        <img src="foto1.jpg" class="ambilight-glow">
-                        <img src="foto1.jpg" class="media-front">
+                        <img src="foto1.jpg" class="ambilight-glow"><img src="foto1.jpg" class="media-front">
                     </div>
-                    <p class="slide-caption">Gülüşündekii huzuurr🫠🫠.</p>
                 </div>
-                
-                <div class="slide">
-                    <div class="ambilight-frame">
-                        <img src="foto2.jpg" class="ambilight-glow">
-                        <img src="foto2.jpg" class="media-front">
-                    </div>
-                    <p class="slide-caption">İyi ki sen.</p>
-                </div>
-
             </div>
             <button class="slider-btn next" onclick="scrollSlider('foto-slider', 1)">&#10095;</button>
         </div>
     </section>
 
-    <!-- 6. VİDEOLAR (Kapsayıcı Ambilight Çerçevesi) -->
+    <!-- 6. VİDEOLAR -->
     <section id="videolar" class="content-section">
         <h2>Birlikte Çekilenler</h2>
-        <p style="text-align:center; color:#888; font-size:0.9em;">(Yana kaydırarak değiştirebilirsin)</p>
-        
         <div class="slider-wrapper">
             <button class="slider-btn prev" onclick="scrollSlider('video-slider', -1)">&#10094;</button>
             <div class="slider" id="video-slider">
-                
                 <div class="slide">
                     <div class="ambilight-frame">
-                        <div class="ambilight-glow" style="background: rgba(100,150,255,0.5);"></div>
-                        <video controls class="media-front"><source src="video1.mp4" type="video/mp4"></video>
+                        <canvas class="ambilight-glow js-ambilight-canvas" width="400" height="250"></canvas>
+                        <video controls class="media-front js-ambilight-video"><source src="video1.mp4" type="video/mp4"></video>
                     </div>
-                    <p class="slide-caption">Bebişiminnn ilk ritmii.</p>
                 </div>
-
             </div>
             <button class="slider-btn next" onclick="scrollSlider('video-slider', 1)">&#10095;</button>
         </div>
     </section>
 
-    <!-- 7. NORMAL MÜZİKLER -->
+    <!-- 7. MÜZİKLER -->
     <section id="muzikler" class="content-section">
         <h2>Karışık Kasetimiz</h2>
         <div class="song-card">
@@ -341,175 +294,304 @@
     <section id="oyun" class="content-section">
         <h2>Oyun Odasına Hoş Geldin!</h2>
         
+        <!-- YENİ 1: Şarkı Bilmece (Heardle Mantığı) -->
+        <div class="game-section">
+            <h3>🎵 Hatıranın Sesi 🎵</h3>
+            <div style="text-align: center;">
+                <p style="color: #666; font-size: 0.95em;">Şarkının rastgele bir kesitini dinle. Bulamazsan süre ekle!</p>
+                <div class="song-timer-display" id="sq-sure-gosterge">Süre: 0.5 Saniye</div>
+                
+                <button class="game-btn" onclick="sarkiyiOynat()">▶ Dinle</button>
+                <button class="game-btn" id="sq-sure-btn" style="background: #d4a373;" onclick="sarkiSureEkle()">+ Süre Ekle</button>
+                
+                <div style="margin-top: 15px;">
+                    <input type="text" id="sq-tahmin-input" class="quiz-input" placeholder="Şarkının adını yaz...">
+                    <br><button class="game-btn" style="background:#55efc4; color:#333;" onclick="sarkiTahminEt()">Bildim!</button>
+                </div>
+                
+                <div id="sq-sonuc" class="game-result"></div>
+                <button class="game-btn" id="sq-yeni-oyun" style="display:none; margin-top:10px;" onclick="sarkiOyunuBaslat()">Yeni Şarkıya Geç</button>
+            </div>
+        </div>
+
+        <!-- YENİ 2: Renk Hafızası -->
+        <div class="game-section" id="renk-oyunu">
+            <h3>🎨 Renk Hafızası 🎨</h3>
+            <p style="text-align: center; color: #555;">Ekrana gelen rengi 3 saniye aklında tut ve paletten aynısını seç!</p>
+            
+            <div id="color-modes" style="text-align: center;">
+                <button class="game-btn" onclick="renkOyunuBaslat(true)">Süreli (10 Sn)</button>
+                <button class="game-btn" onclick="renkOyunuBaslat(false)">Süresiz</button>
+            </div>
+
+            <div id="color-play-area" style="display: none; text-align: center;">
+                <h4 id="color-instruction" style="color: #d4a373; font-family: 'Cinzel', serif;">Rengi Aklında Tut!</h4>
+                <h2 id="color-timer" style="color: #d63031; font-family: 'Caveat', cursive; font-size: 2.5em; margin: 10px 0;">3</h2>
+                
+                <div id="target-color-box" style="background-color: #fff; margin: 15px auto; width: 120px; height: 120px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: 0.3s;"></div>
+                
+                <div id="color-picker-area" style="display: none; margin-top: 20px;">
+                    <input type="color" id="user-color-picker">
+                    <br><br><button class="game-btn" style="background:#55efc4; color:#333;" onclick="renkDegerlendir()">Seçimimi Onayla</button>
+                </div>
+            </div>
+
+            <div id="color-result-area" style="display: none; text-align: center;">
+                <div style="display: flex; justify-content: center; gap: 30px; margin-top: 15px;">
+                    <div><p style="font-weight: bold; color: #4a3f35;">Asıl Renk</p><div id="res-target-box" style="width: 80px; height: 80px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></div></div>
+                    <div><p style="font-weight: bold; color: #4a3f35;">Senin Seçimin</p><div id="res-user-box" style="width: 80px; height: 80px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></div></div>
+                </div>
+                <div id="color-score" class="game-result"></div>
+                <button class="game-btn" onclick="renkOyunuSifirla()" style="margin-top: 15px;">Tekrar Oyna</button>
+            </div>
+        </div>
+
+        <!-- YENİ 3: Görselli Hafıza Kartları -->
+        <div class="game-section">
+            <h3>✨ Anılarla Eşini Bul ✨</h3>
+            <p style="text-align: center; color: #555; font-size: 0.85em;">(Klasördeki es_kart1.jpg - es_kart4.jpg fotoğraflarıyla çalışır)</p>
+            <div class="game-board">
+                <!-- 4 Farklı Kendi Fotoğrafınız -->
+                <div class="memory-card" data-isim="k1"><div class="front-face"><img src="es_kart1.jpg" class="card-img" alt="Kart 1"></div><div class="back-face">?</div></div>
+                <div class="memory-card" data-isim="k2"><div class="front-face"><img src="es_kart2.jpg" class="card-img" alt="Kart 2"></div><div class="back-face">?</div></div>
+                <div class="memory-card" data-isim="k3"><div class="front-face"><img src="es_kart3.jpg" class="card-img" alt="Kart 3"></div><div class="back-face">?</div></div>
+                <div class="memory-card" data-isim="k4"><div class="front-face"><img src="es_kart4.jpg" class="card-img" alt="Kart 4"></div><div class="back-face">?</div></div>
+                <!-- Kartların Eşleri -->
+                <div class="memory-card" data-isim="k1"><div class="front-face"><img src="es_kart1.jpg" class="card-img" alt="Kart 1"></div><div class="back-face">?</div></div>
+                <div class="memory-card" data-isim="k2"><div class="front-face"><img src="es_kart2.jpg" class="card-img" alt="Kart 2"></div><div class="back-face">?</div></div>
+                <div class="memory-card" data-isim="k3"><div class="front-face"><img src="es_kart3.jpg" class="card-img" alt="Kart 3"></div><div class="back-face">?</div></div>
+                <div class="memory-card" data-isim="k4"><div class="front-face"><img src="es_kart4.jpg" class="card-img" alt="Kart 4"></div><div class="back-face">?</div></div>
+            </div>
+            <div id="win-message">Tebrikler Sevgilim! 🎉<br>Ödülün: Kocaman bir sarılma!</div>
+        </div>
+
+        <!-- Aşk Ölçer -->
         <div class="game-section">
             <h3>💘 Aşk Ölçer 💘</h3>
             <div class="love-meter-box">
-                <p>Bakalım aramızdaki çekim ne kadar güçlü?</p>
-                <button class="love-btn" onclick="askOlc()">Aşkımızı Ölç</button>
+                <button class="game-btn" onclick="askOlc()">Aşkımızı Ölç</button>
                 <div class="meter-bar"><div class="meter-fill" id="love-fill"></div></div>
                 <div id="love-result"></div>
             </div>
         </div>
 
+        <!-- Kimyasal XOX -->
         <div class="game-section">
             <h3>🤍 Kimyasal XOX 🧪</h3>
             <div class="xox-status" id="xox-status">Sıra sende: 🤍</div>
             <div class="xox-board">
-                <div class="xox-cell" onclick="xoxOyna(0, this)"></div>
-                <div class="xox-cell" onclick="xoxOyna(1, this)"></div>
-                <div class="xox-cell" onclick="xoxOyna(2, this)"></div>
-                <div class="xox-cell" onclick="xoxOyna(3, this)"></div>
-                <div class="xox-cell" onclick="xoxOyna(4, this)"></div>
-                <div class="xox-cell" onclick="xoxOyna(5, this)"></div>
-                <div class="xox-cell" onclick="xoxOyna(6, this)"></div>
-                <div class="xox-cell" onclick="xoxOyna(7, this)"></div>
-                <div class="xox-cell" onclick="xoxOyna(8, this)"></div>
+                <div class="xox-cell" onclick="xoxOyna(0, this)"></div><div class="xox-cell" onclick="xoxOyna(1, this)"></div><div class="xox-cell" onclick="xoxOyna(2, this)"></div>
+                <div class="xox-cell" onclick="xoxOyna(3, this)"></div><div class="xox-cell" onclick="xoxOyna(4, this)"></div><div class="xox-cell" onclick="xoxOyna(5, this)"></div>
+                <div class="xox-cell" onclick="xoxOyna(6, this)"></div><div class="xox-cell" onclick="xoxOyna(7, this)"></div><div class="xox-cell" onclick="xoxOyna(8, this)"></div>
             </div>
             <button class="xox-reset" onclick="xoxSifirla()">Oyunu Yeniden Başlat</button>
         </div>
 
-        <div class="game-section">
-            <h3>✨ Eşini Bul ✨</h3>
-            <div class="game-board">
-                <div class="memory-card" data-isim="kimya"><div class="front-face">🧪</div><div class="back-face">?</div></div>
-                <div class="memory-card" data-isim="gitar"><div class="front-face">🎸</div><div class="back-face">?</div></div>
-                <div class="memory-card" data-isim="drone"><div class="front-face">🛸</div><div class="back-face">?</div></div>
-                <div class="memory-card" data-isim="kalp"><div class="front-face">🤍</div><div class="back-face">?</div></div>
-                <div class="memory-card" data-isim="kimya"><div class="front-face">🧪</div><div class="back-face">?</div></div>
-                <div class="memory-card" data-isim="gitar"><div class="front-face">🎸</div><div class="back-face">?</div></div>
-                <div class="memory-card" data-isim="drone"><div class="front-face">🛸</div><div class="back-face">?</div></div>
-                <div class="memory-card" data-isim="kalp"><div class="front-face">🤍</div><div class="back-face">?</div></div>
-            </div>
-            <div id="win-message">Tebrikler Sevgilim! 🎉<br>Ödülün: Kocaman bir sarılma!</div>
-        </div>
     </section>
 
     <!-- JAVASCRIPT -->
     <script>
+        // --- 1. SEKMELER, TEMALAR, VİDEO AMBILIGHT ---
         function openTab(tabId, btnElement, themeClass) {
             document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btnElement.classList.add('active');
             document.body.className = themeClass; 
-
             btnElement.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
 
             if(tabId === 'masal') {
-                setTimeout(() => {
-                    document.querySelectorAll('.reveal-text').forEach(el => el.classList.add('show'));
-                }, 200);
-            } else {
-                document.querySelectorAll('.reveal-text').forEach(el => el.classList.remove('show'));
-            }
+                setTimeout(() => { document.querySelectorAll('.reveal-text').forEach(el => el.classList.add('show')); }, 200);
+            } else { document.querySelectorAll('.reveal-text').forEach(el => el.classList.remove('show')); }
         }
 
         function scrollSlider(sliderId, direction) {
             const slider = document.getElementById(sliderId);
-            const scrollAmount = slider.clientWidth;
-            slider.scrollBy({ left: scrollAmount * direction, behavior: 'smooth' });
+            slider.scrollBy({ left: slider.clientWidth * direction, behavior: 'smooth' });
         }
 
-        let tumHayaller = ['hayal1', 'hayal2']; 
         document.addEventListener("DOMContentLoaded", function() {
-            tumHayaller.forEach(function(id) {
-                let kayit = localStorage.getItem(id);
-                if (kayit) {
-                    document.getElementById('item-' + id).classList.add('completed');
-                    aniyiEkrandaGoster(id, JSON.parse(kayit));
+            const videos = document.querySelectorAll('.js-ambilight-video');
+            videos.forEach(video => {
+                const canvas = video.previousElementSibling;
+                if(canvas && canvas.classList.contains('js-ambilight-canvas')) {
+                    const ctx = canvas.getContext('2d');
+                    function step() { if (!video.paused && !video.ended) { ctx.drawImage(video, 0, 0, canvas.width, canvas.height); requestAnimationFrame(step); } }
+                    video.addEventListener('play', () => requestAnimationFrame(step));
                 }
             });
+            sarkiOyunuBaslat(); // Sayfa açılınca şarkı oyununu kur
         });
 
-        function tiklamaOlayi(id) {
-            if (localStorage.getItem(id)) { alert("Önce aşağıdaki Sil butonuna basmalısın."); return; }
-            let kutu = document.getElementById('item-' + id);
-            kutu.classList.toggle('completed');
-            document.getElementById('edit-' + id).style.display = kutu.classList.contains('completed') ? 'block' : 'none';
+        // --- 2. ŞARKI BİLMECE MOTORU (YENİ) ---
+        // Kendi şarkı isimlerini ve mp3 dosyalarını buraya ekleyebilirsin
+        const sarkiKutuphanesi = [
+            { ad: "İlk Dansımız", dosya: "bilmece1.mp3" },
+            { ad: "Yol Şarkısı", dosya: "bilmece2.mp3" },
+            { ad: "Senin Şarkın", dosya: "bilmece3.mp3" }
+        ];
+        
+        const sureAdimlari = [0.5, 1.5, 3, 5, 8, 15];
+        let anlikAdim = 0;
+        let baslamaNoktasi = 0;
+        let seciliSarki = null;
+        let sesMotoru = new Audio();
+        let dinlemeZamanlayici;
+        let sarkiOyunBitti = false;
+
+        function sarkiOyunuBaslat() {
+            sarkiOyunBitti = false;
+            anlikAdim = 0;
+            document.getElementById('sq-sonuc').innerHTML = "";
+            document.getElementById('sq-tahmin-input').value = "";
+            document.getElementById('sq-tahmin-input').disabled = false;
+            document.getElementById('sq-sure-btn').disabled = false;
+            document.getElementById('sq-yeni-oyun').style.display = 'none';
+            document.getElementById('sq-sure-gosterge').innerText = `Süre: ${sureAdimlari[anlikAdim]} Saniye`;
+
+            // Rastgele şarkı seç
+            seciliSarki = sarkiKutuphanesi[Math.floor(Math.random() * sarkiKutuphanesi.length)];
+            sesMotoru.src = seciliSarki.dosya;
+            
+            // Şarkı yüklendiğinde maksimum 15sn kalacak şekilde rastgele bir başlangıç noktası seç
+            sesMotoru.onloadedmetadata = () => {
+                let maxBaslangic = Math.max(0, sesMotoru.duration - 15);
+                baslamaNoktasi = Math.random() * maxBaslangic;
+            };
+            sesMotoru.onerror = () => { baslamaNoktasi = 0; };
         }
 
-        function aniyiKaydet(id) {
-            let not = document.getElementById('note-' + id).value;
-            let dosya = document.getElementById('file-' + id).files[0];
-            if (dosya) {
-                let okuyucu = new FileReader();
-                okuyucu.onload = function(e) {
-                    let veri = { yazi: not, fotograf: e.target.result };
-                    localStorage.setItem(id, JSON.stringify(veri));
-                    aniyiEkrandaGoster(id, veri);
-                }
-                okuyucu.readAsDataURL(dosya);
+        function sarkiyiOynat() {
+            if(sarkiOyunBitti) return;
+            clearTimeout(dinlemeZamanlayici);
+            sesMotoru.currentTime = baslamaNoktasi;
+            sesMotoru.play();
+            
+            // Seçilen süre adımı kadar oynatıp durdur
+            dinlemeZamanlayici = setTimeout(() => {
+                sesMotoru.pause();
+            }, sureAdimlari[anlikAdim] * 1000);
+        }
+
+        function sarkiSureEkle() {
+            if(sarkiOyunBitti) return;
+            if(anlikAdim < sureAdimlari.length - 1) {
+                anlikAdim++;
+                document.getElementById('sq-sure-gosterge').innerText = `Süre: ${sureAdimlari[anlikAdim]} Saniye`;
             } else {
-                let veri = { yazi: not, fotograf: "" };
-                localStorage.setItem(id, JSON.stringify(veri));
-                aniyiEkrandaGoster(id, veri);
+                // Son adıma gelindiyse ve bilemediyse
+                sarkiOyunBitir(false);
             }
         }
 
-        function aniyiEkrandaGoster(id, veri) {
-            document.getElementById('edit-' + id).style.display = 'none';
-            document.getElementById('display-' + id).style.display = 'block';
-            document.getElementById('text-' + id).innerText = veri.yazi;
-            let resim = document.getElementById('img-' + id);
-            if (veri.fotograf) { resim.src = veri.fotograf; resim.style.display = 'block'; } 
-            else { resim.style.display = 'none'; }
-        }
-
-        function aniyiSil(id) {
-            if (confirm("Silmek istediğine emin misin?")) {
-                localStorage.removeItem(id);
-                document.getElementById('item-' + id).classList.remove('completed');
-                document.getElementById('display-' + id).style.display = 'none';
-                document.getElementById('note-' + id).value = '';
-                document.getElementById('file-' + id).value = '';
+        function sarkiTahminEt() {
+            if(sarkiOyunBitti) return;
+            let tahmin = document.getElementById('sq-tahmin-input').value.toLowerCase().trim();
+            let gercekAd = seciliSarki.ad.toLowerCase().trim();
+            
+            if(tahmin === "") return;
+            
+            // Tahmin gerçek ismin içinde geçiyorsa doğru kabul et
+            if(gercekAd.includes(tahmin)) {
+                sarkiOyunBitir(true);
+            } else {
+                document.getElementById('sq-sonuc').innerHTML = "Bilemedin! Süre ekle veya tekrar dinle 🙈";
             }
         }
 
-        function askOlc() {
-            let bar = document.getElementById('love-fill');
-            let sonuc = document.getElementById('love-result');
-            sonuc.innerHTML = "Ölçülüyor...";
-            bar.style.width = '100%';
-            setTimeout(() => {
-                sonuc.innerHTML = "Sonuç: %999 <br> (Hata: Cihaz bu kadar büyük bir aşkı ölçemedi! ♾️🤍)";
-            }, 2000);
-        }
-
-        let xoxTahta = ["", "", "", "", "", "", "", "", ""];
-        let siraKalpte = true;
-        let xoxBitti = false;
-
-        function xoxOyna(index, hucre) {
-            if (xoxTahta[index] !== "" || xoxBitti) return;
-            let sembol = siraKalpte ? "🤍" : "🧪";
-            xoxTahta[index] = sembol;
-            hucre.innerText = sembol;
-            xoxKontrol();
-            if(!xoxBitti) {
-                siraKalpte = !siraKalpte;
-                document.getElementById('xox-status').innerText = "Sıra: " + (siraKalpte ? "🤍" : "🧪");
+        function sarkiOyunBitir(kazandi) {
+            sarkiOyunBitti = true;
+            document.getElementById('sq-tahmin-input').disabled = true;
+            document.getElementById('sq-sure-btn').disabled = true;
+            document.getElementById('sq-yeni-oyun').style.display = 'inline-block';
+            
+            if(kazandi) {
+                document.getElementById('sq-sonuc').innerHTML = `Doğru Bildin! 🎉 <br><span style="color:#555;font-size:0.7em;">Şarkı: ${seciliSarki.ad}</span>`;
+            } else {
+                document.getElementById('sq-sonuc').innerHTML = `Maalesef hakkın bitti 😔 <br><span style="color:#555;font-size:0.7em;">Doğru Cevap: ${seciliSarki.ad}</span>`;
             }
         }
 
-        function xoxKontrol() {
-            const kazanmaDurumlari = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-            for (let durum of kazanmaDurumlari) {
-                let [a, b, c] = durum;
-                if (xoxTahta[a] && xoxTahta[a] === xoxTahta[b] && xoxTahta[a] === xoxTahta[c]) {
-                    document.getElementById('xox-status').innerText = "Kazanan: " + xoxTahta[a] + " 🎉";
-                    xoxBitti = true; return;
-                }
-            }
-            if(!xoxTahta.includes("")) { document.getElementById('xox-status').innerText = "Berabere! 😅"; xoxBitti = true; }
+        // --- 3. RENK HAFIZASI OYUNU MOTORU ---
+        let hedefRGB = {r: 0, g: 0, b: 0};
+        let sureliMod = false;
+        let renkSayaciInterval;
+
+        function rastgeleRGBUret() { return { r: Math.floor(Math.random()*256), g: Math.floor(Math.random()*256), b: Math.floor(Math.random()*256) }; }
+        function rgbDenHex(rgb) { return "#" + (1 << 24 | rgb.r << 16 | rgb.g << 8 | rgb.b).toString(16).slice(1); }
+        function hexDenRgb(hex) { let b = parseInt(hex.slice(1), 16); return { r: (b>>16)&255, g: (b>>8)&255, b: b&255 }; }
+
+        function renkOyunuSifirla() {
+            document.getElementById('color-modes').style.display = 'block';
+            document.getElementById('color-play-area').style.display = 'none';
+            document.getElementById('color-result-area').style.display = 'none';
+            document.getElementById('color-picker-area').style.display = 'none';
+            clearInterval(renkSayaciInterval);
         }
 
-        function xoxSifirla() {
-            xoxTahta = ["", "", "", "", "", "", "", "", ""];
-            siraKalpte = true; xoxBitti = false;
-            document.getElementById('xox-status').innerText = "Sıra sende: 🤍";
-            document.querySelectorAll('.xox-cell').forEach(hucre => hucre.innerText = "");
+        function renkOyunuBaslat(sureliSecim) {
+            sureliMod = sureliSecim;
+            hedefRGB = rastgeleRGBUret();
+            
+            document.getElementById('color-modes').style.display = 'none';
+            document.getElementById('color-play-area').style.display = 'block';
+            document.getElementById('color-result-area').style.display = 'none';
+            document.getElementById('color-picker-area').style.display = 'none';
+            
+            let hedefKutu = document.getElementById('target-color-box');
+            hedefKutu.style.backgroundColor = rgbDenHex(hedefRGB);
+            hedefKutu.style.display = 'block';
+            
+            document.getElementById('color-instruction').innerText = "Rengi Aklında Tut!";
+            let beklemeSuresi = 3;
+            document.getElementById('color-timer').innerText = beklemeSuresi;
+            
+            renkSayaciInterval = setInterval(() => {
+                beklemeSuresi--; document.getElementById('color-timer').innerText = beklemeSuresi;
+                if(beklemeSuresi <= 0) { clearInterval(renkSayaciInterval); renkSecimEkraniniAc(); }
+            }, 1000);
         }
 
+        function renkSecimEkraniniAc() {
+            document.getElementById('target-color-box').style.display = 'none';
+            document.getElementById('color-instruction').innerText = "Renk Paletinden Aynısını Bul!";
+            document.getElementById('color-picker-area').style.display = 'block';
+            document.getElementById('user-color-picker').value = "#ffffff"; 
+            
+            if(sureliMod) {
+                let secimSuresi = 10;
+                document.getElementById('color-timer').innerText = `Kalan Süre: ${secimSuresi}`;
+                renkSayaciInterval = setInterval(() => {
+                    secimSuresi--; document.getElementById('color-timer').innerText = `Kalan Süre: ${secimSuresi}`;
+                    if(secimSuresi <= 0) { clearInterval(renkSayaciInterval); renkDegerlendir(); }
+                }, 1000);
+            } else { document.getElementById('color-timer').innerText = "Süresiz Mod"; }
+        }
+
+        function renkDegerlendir() {
+            clearInterval(renkSayaciInterval);
+            document.getElementById('color-play-area').style.display = 'none';
+            document.getElementById('color-result-area').style.display = 'block';
+            
+            let kullaniciHex = document.getElementById('user-color-picker').value;
+            let kullaniciRGB = hexDenRgb(kullaniciHex);
+            
+            document.getElementById('res-target-box').style.backgroundColor = rgbDenHex(hedefRGB);
+            document.getElementById('res-user-box').style.backgroundColor = kullaniciHex;
+            
+            let fark = Math.abs(hedefRGB.r - kullaniciRGB.r) + Math.abs(hedefRGB.g - kullaniciRGB.g) + Math.abs(hedefRGB.b - kullaniciRGB.b);
+            let puan = 10 - ((fark / (255 * 3)) * 10); if(puan < 0) puan = 0;
+            
+            let geribildirim = "";
+            if(puan >= 9.5) geribildirim = "Mükemmel Hafıza! 💯";
+            else if(puan >= 8) geribildirim = "Çok yakın! 👏";
+            else if(puan >= 5) geribildirim = "Renkler biraz karışmış 🤷‍♂️";
+            else geribildirim = "Renk körü müsün sevgilim? 😂";
+            
+            document.getElementById('color-score').innerHTML = `Puanın: ${puan.toFixed(1)} / 10 <br><span style="font-size:0.7em; color:#666;">${geribildirim}</span>`;
+        }
+
+        // --- 4. GÖRSELLİ HAFIZA KARTLARI ---
         const kartlar = document.querySelectorAll('.memory-card');
         let kartAcik = false, tahtaKilitli = false, ilkKart, ikinciKart, eslesmeSayisi = 0;
 
@@ -540,6 +622,19 @@
 
         (function karistir() { kartlar.forEach(kart => kart.style.order = Math.floor(Math.random() * 8)); })();
         kartlar.forEach(kart => kart.addEventListener('click', kartCevir));
+
+        // --- AŞK ÖLÇER & XOX (Öncekilerle Aynı) ---
+        function askOlc() { let sonuc = document.getElementById('love-result'); sonuc.innerHTML = "Ölçülüyor..."; document.getElementById('love-fill').style.width = '100%'; setTimeout(() => { sonuc.innerHTML = "Sonuç: %999 <br> (Hata: Cihaz bu kadar büyük bir aşkı ölçemedi! ♾️🤍)"; }, 2000); }
+        let xoxTahta = ["", "", "", "", "", "", "", "", ""]; let siraKalpte = true; let xoxBitti = false;
+        function xoxOyna(index, hucre) { if (xoxTahta[index] !== "" || xoxBitti) return; let sembol = siraKalpte ? "🤍" : "🧪"; xoxTahta[index] = sembol; hucre.innerText = sembol; xoxKontrol(); if(!xoxBitti) { siraKalpte = !siraKalpte; document.getElementById('xox-status').innerText = "Sıra: " + (siraKalpte ? "🤍" : "🧪"); } }
+        function xoxKontrol() { const k = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]; for (let d of k) { let [a, b, c] = d; if (xoxTahta[a] && xoxTahta[a] === xoxTahta[b] && xoxTahta[a] === xoxTahta[c]) { document.getElementById('xox-status').innerText = "Kazanan: " + xoxTahta[a] + " 🎉"; xoxBitti = true; return; } } if(!xoxTahta.includes("")) { document.getElementById('xox-status').innerText = "Berabere! 😅"; xoxBitti = true; } }
+        function xoxSifirla() { xoxTahta = ["", "", "", "", "", "", "", "", ""]; siraKalpte = true; xoxBitti = false; document.getElementById('xox-status').innerText = "Sıra sende: 🤍"; document.querySelectorAll('.xox-cell').forEach(h => h.innerText = ""); }
+        
+        // --- HAYALLER HARİTASI (Basitleştirilmiş Yükleyici) ---
+        function tiklamaOlayi(id) { if (localStorage.getItem(id)) { alert("Önce Sil butonuna basmalısın."); return; } let k = document.getElementById('item-' + id); k.classList.toggle('completed'); document.getElementById('edit-' + id).style.display = k.classList.contains('completed') ? 'block' : 'none'; }
+        function aniyiKaydet(id) { let n = document.getElementById('note-' + id).value; let d = document.getElementById('file-' + id).files[0]; if (d) { let o = new FileReader(); o.onload = function(e) { let v = { yazi: n, fotograf: e.target.result }; localStorage.setItem(id, JSON.stringify(v)); aniyiEkrandaGoster(id, v); }; o.readAsDataURL(d); } else { let v = { yazi: n, fotograf: "" }; localStorage.setItem(id, JSON.stringify(v)); aniyiEkrandaGoster(id, v); } }
+        function aniyiEkrandaGoster(id, v) { document.getElementById('edit-' + id).style.display = 'none'; document.getElementById('display-' + id).style.display = 'block'; document.getElementById('text-' + id).innerText = v.yazi; let r = document.getElementById('img-' + id); if (v.fotograf) { r.src = v.fotograf; r.style.display = 'block'; } else { r.style.display = 'none'; } }
+        function aniyiSil(id) { if (confirm("Emin misin?")) { localStorage.removeItem(id); document.getElementById('item-' + id).classList.remove('completed'); document.getElementById('display-' + id).style.display = 'none'; document.getElementById('note-' + id).value = ''; document.getElementById('file-' + id).value = ''; } }
 
     </script>
 </body>
